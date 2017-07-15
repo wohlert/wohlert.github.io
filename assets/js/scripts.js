@@ -1,0 +1,70 @@
+hljs.initHighlightingOnLoad();
+
+$("main").fitVids();
+
+var fullImage = function() {
+  $(".full").each(function() {
+    $(this).addClass("full-js");
+    $(this).closest("p").css("min-height",$(this).height());
+    console.log($(this).height);
+  });
+}
+
+/* Add a caption to each image */
+var caption = function() {
+  $(".post-content img").each(function() {
+    if($(this).attr("alt")) { $(this).wrap('<figure class="image"></figure>').after('<figcaption>'+$(this).attr("alt")+'</figcaption>'); }
+  });
+}
+
+/* Cuts of long text with ellipsis */
+var ellipsis = function() {
+  $(".post-content-short").each(function() {
+    $(this).children().last().append(" ...");
+  });
+}
+
+/* Relativizes time and date */
+var timesince = function(t){var n={prefix:"",future:"",suffix:" ago",seconds:"Less than a minute",minute:"About a minute",minutes:"%d minutes",hour:"About an hour",hours:"About %d hours",day:"One day",days:"%d days",month:"About a month",months:"%d months",year:"About a year",years:"%d years"};var r=function(e,t){return n[e]&&n[e].replace(/%d/i,Math.abs(Math.round(t)))};var i=function(e){if(!e)return;e=parseInt(e)*1e3;e=new Date(e);var t=new Date;var i=(t.getTime()-e)*.001>>0;var s=i/60;var o=s/60;var u=o/24;var a=u/365;return n.prefix+(i<0&&r("future")||i<45&&r("seconds",i)||i<90&&r("minute",1)||s<45&&r("minutes",s)||s<90&&r("hour",1)||o<24&&r("hours",o)||o<42&&r("day",1)||u<30&&r("days",u)||u<45&&r("month",1)||u<365&&r("months",u/30)||a<1.5&&r("year",1)||r("years",a))+(i<0&&""||n.suffix)};var s=document.getElementsByClassName("timesince");for(var o in s){var u=s[o];if(typeof u==="object"){u.innerHTML=i(u.dataset.timesince||u.dataset.timesince)}}setTimeout(timesince,6e4)}
+
+$(document).ready([fullImage, caption, ellipsis]);
+$(window).resize(fullImage);
+window.onload = timesince;
+
+/* Mini navigation scripting */
+
+var container = $("#mini-nav");
+var nav = container.find('nav');
+var btn = container.find('button');
+
+var openNav = function() {
+  btn.hide("fade", 200, function(){
+    nav.show("slide", {direction: 'right', easing: 'easeInSine'}, 300);
+  });
+}
+
+var closeNav = function() {
+  nav.hide("slide", {direction: 'right', easing: 'easeOutSine'}, 300, function() {
+    btn.show("fade", 600);
+  });
+}
+
+$("#options").click(function() {
+  openNav();
+  return false;
+});
+
+$("#exit").click(function() {
+  closeNav();
+  return false;
+});
+
+$('#a-discus').click(function() {
+  $('html, body').animate({
+    scrollTop: $('#disqus_thread').offset().top
+  }, "slow");
+});
+
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) closeNav();
+});
