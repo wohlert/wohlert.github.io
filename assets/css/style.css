@@ -137,7 +137,7 @@ body {
 
 h1, h2, h3, .archive-heading, h4, h5 {
   font-family: Arial, sans-serif;
-  font-weight: 100;
+  font-weight: 700;
   color: #3F484C;
   font-size: 32px;
   font-size: 2rem;
@@ -1225,9 +1225,9 @@ mark {
   display: inline-block;
   line-height: 0em;
   padding-bottom: 0.5em;
-  background-color: rgba(20, 225, 245, 0.3);
+  background-color: rgba(237, 125, 101, 0.3);
 }
 
 mark:hover {
-  background-color: rgba(20, 225, 245, 0.6)
+  background-color: rgba(237, 125, 101, 0.6)
 }
