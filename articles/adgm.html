@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Wohlert.nu</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <script src="https://unpkg.com/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js" charset="utf-8"></script>
+    <script src="../assets/js/highlight.pack.js"></script>
+  </head>
+  <body class="post-template">
+    <div id="header">
+      <h3>
+        <a href="../index.html" style="text-decoration:none;">
+          wohlert.nu
+        </a>
+      </h3>
+    </div>
+    <main id="main" class="post">
+      <article class="content post">
+        <header class="meta">
+          <h1 class="post-title">Auxiliary Deep Generative Models</h1>
+          <span class="post-data">
+              <time class="date" itemprop="datePublished" datetime="2017-11-06T22:32" title="06 Nov 2017" data-timesince="1508617981">Published on 21 Oct 2017
+              </time>
+              <section class="byline" style="display:none;"> <span itemprop="author" itemscope="" itemtype="http://schema.org/Person">by <span itemprop="name" rel="author">Jesper Wohlert</span></span>
+              </section>
+          </span>
+        </header>
+        <section itemprop="articleBody text" class="post-content">
+          <p>
+            The Auxiliary Deep Generative Network (ADGM) <a href="https://arxiv.org/abs/1602.05473">[Maaløe 2016]</a> describes
+            a generative model based on a variational autoencoder, which is enabled
+            for semi-supervised learning.
+          </p>
+
+          <h2>Model performance</h2>
+          <p>
+                Notice how well the model performs in these charts.
+          </p>
+          <div id="chart"></div>
+
+          <blockquote>
+            <p>In thermodynamics, the Helmholtz free energy is a thermodynamic potential that measures the "useful" work obtainable from a closed thermodynamic system at a constant temperature and volume. The negative of the difference in the Helmholtz energy is equal to the maximum amount of work that the system can perform in a thermodynamic process in which volume is held constant. If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.</p>
+          </blockquote>
+          <p>
+            The model attempts to capture both the labels and the underlying distribution
+            at the same time and improves over [Kingma 2014] by introducing an
+            auxiliary variable $a$. The Lower bound looks like this.
+
+            $$- \mathcal{L}(x, y) = \mathbb{E}_{q_{\phi}(z|x, y)} [ \log p_{\theta}(x|y, z) + \log p_{\theta}(y) + \log \frac{p(z)}{q_{\phi}(z|x, y)} ]$$
+
+            <figure style="float:right; padding:0px 50px;">
+                <img width="150px" src="../assets/images/nn.svg">
+                <figcaption>
+                    Inference model
+                </figcaption>
+            </figure>
+            
+
+            As a graphical model, it looks as follows. Notice how we have added the
+            <mark>auxiliary variable</mark> $a$ into the model.
+
+            If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.
+          </p>
+          <br>
+          <p>
+            We can implement the training loop below.
+          </p>
+          <pre>
+            <code class="python">class DGMTrainer():
+    def __init__(self, model, objective, optimizer, cuda=False):
+        self.model = model
+        self.objective = objective
+        self.optimizer = optimizer
+        self.cuda = cuda
+
+    def calculate_loss(self, x, y=None):
+        is_unlabelled = True if y is None else False
+
+        x = Variable(x)
+        logits = self.model(x)
+
+        # If the data is unlabelled, sum over all classes
+        if is_unlabelled:
+            [batch_size, *_] = x.size()
+            x = x.repeat(n, 1)
+            y = torch.cat([generate_label(batch_size, i, n) for i in range(n)])
+
+        y = Variable(y.type(torch.FloatTensor))
+
+        if self.cuda:
+            x = x.cuda()
+            y = y.cuda()</code>
+          </pre>
+        </section>
+      </article>
+      <footer style="background: none; border-top: 1px solid #DDD">
+            <section>
+                <p>
+                    Footnotes:
+                    <ol>
+                        <li>The gradient is actually given by $\nabla w = \frac{\partial f(w)}{\partial w}$.</li>
+                    </ol>
+                    Referenced articles:
+                    <ul>
+                        <li>[Maaløe 2016] Maaløe, L., Sønderby, C. K., Sønderby, S. K., & Winther, O. (2016). Auxiliary deep generative models. <span style="font-style:italic">arXiv preprint arXiv:1602.05473.</span></li>
+                        <li>Goodfellow, I., Pouget-Abadie, J., Mirza, M., Xu, B., Warde-Farley, D., Ozair, S., ... & Bengio, Y. (2014). Generative adversarial nets. <span style="font-style:italic"></span>In Advances in neural information processing systems (pp. 2672-2680).</span></li>
+                    </ul>
+                </p>
+            </section>
+        </footer>
+    </main>
+  </body>
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script src="../assets/js/scripts.js"></script>
+  <script>
+  let sunspots = [132.9, 150.0, 149.4, 148.0,  94.4,  97.6,  54.1,  49.2,  22.5, 18.4,
+				39.3, 131.0, 220.1, 218.9, 198.9, 162.4,  91.0,  60.5,  20.6,  14.8,
+				33.9, 123.0, 211.1, 191.8, 203.3, 133.0,  76.1,  44.9,  25.1,  11.6,
+				28.9,  88.3, 136.3, 173.9, 170.4, 163.6,  99.3,  65.3,  45.8,  24.7,
+                12.6,   4.2,   4.8,  24.9,  80.8,  84.5,  94.0, 113.3,  69.8,  39.8];
+
+  let data = {
+	labels: [1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976,
+		1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986,
+		1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996,
+		1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
+		2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016] ,
+	datasets: [
+		{
+            "title": "Sunspots 1",
+			"values": sunspots.map(x => 1.5*x)
+        },
+        {
+            "title": "Sunspots 2",
+            "values": sunspots.map(x => 0.8*x)
+		},
+        {
+            "title": "Sunspots 3",
+            "values": sunspots.map(x => 0.4*x)
+        },
+        {
+            "title": "Sunspots 4",
+            "values": sunspots.map(x => 0.1*x)
+        }
+    ]
+  };
+
+  let chart = new Chart({
+    parent: "#chart", // or a DOM element
+    title: "Number of sunspots observed over time",
+    data: data,
+    type: 'line', // or 'line', 'scatter', 'pie', 'percentage'
+    height: 250,
+    is_series: true,
+	show_dots: false,
+    heatline: true,
+    //region_fill: true,
+    x_axis_mode: 'tick',
+	y_axis_mode: 'span',
+
+    colors: ["#835AF1", "#7FA6EE", "#6FE7DB", "#B8F7D4"],
+    // hex-codes or these preset colors;
+    // defaults (in order):
+    // ['light-blue', 'blue', 'violet', 'red',
+    // 'orange', 'yellow', 'green', 'light-green',
+    // 'purple', 'magenta', 'grey', 'dark-grey']
+
+    format_tooltip_x: d => (d + '').toUpperCase(),
+    format_tooltip_y: d => d.toFixed(2) + ' Observations'
+  });
+  </script>
+</html>

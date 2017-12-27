@@ -263,7 +263,7 @@ sup {
 }
 
 blockquote {
-  padding: 10px 20px;
+  padding: 10px 40px;
   background-color: white;
   color: #848484;
 }
@@ -323,7 +323,7 @@ span.post-data {
 }
 
 main {
-  max-width: 800px;
+  max-width: 1000px;
   width: 100%;
   margin: 0 auto;
   -moz-box-sizing: border-box;
@@ -936,6 +936,143 @@ img.full-js {
 grayscale style (c) MY Sun <simonmysun@gmail.com>
 
 */
+
+
+pre code {
+  display: block;
+  background: white;
+  color: #4d4d4c;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+body {
+  color: #566368;
+  font-family: "Open Sans", "Arial", sans-serif;
+}
+
+h1, h2, h3, .archive-heading, h4, h5, h6 {
+  color: #3f484c;
+  font-family: "Nunito", sans-serif;
+}
+
+a {
+  color: #3f484c;
+  text-decoration: underline;
+  text-decoration-color: #6d7e84;
+  transition: all 0.5s ease !important;
+}
+a:hover {
+  text-decoration: none;
+}
+
+code {
+  background-color: #FEFEFE;
+  border-color: #cbcbcb;
+  border-radius: 3px;
+  font-family: "Source Code Pro", monospace;
+}
+
+pre {
+  border-radius: 3px;
+}
+
+nav {
+  display: none;
+}
+
+nav.links {
+  text-transform: uppercase;
+  font-family: "Source Code Pro", monospace;
+}
+
+figcaption {
+  color: #cbcbcb;
+  font-style: italic;
+}
+
+#index-header {
+  display: none;
+}
+
+.byline {
+  display: inline;
+}
+.byline a {
+  text-decoration: none;
+}
+
+.post-title a, .pagination a {
+  color: #566368;
+  text-decoration: none;
+}
+.post-title a:hover, .pagination a:hover {
+  color: #82d7a8;
+}
+
+#sidebar {
+  background: url("http://i.imgur.com/lVUj8bp.png");
+  background-size: 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #F7F7F7;
+}
+#sidebar * {
+  color: #000;
+  font-family: "Nunito", sans-serif;
+  text-align: left;
+}
+
+#matter {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
+
+#projects {
+  visibility: hidden;
+}
+#projects h3, #projects .archive-heading, #projects h5 {
+  background: #08a5b4;
+  padding: 0 5px;
+}
+#projects h3 a, #projects .archive-heading a, #projects h5 a {
+  text-decoration: underline;
+}
+#projects h5 {
+  width: 120px;
+}
+
+#title {
+  margin-top: 30px;
+}
+#title h2 {
+  text-align: center;
+  text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+}
+
+.box {
+  padding: 10px;
+  background: #FFF;
+  border: 1px solid #CCC;
+  border-radius: 3px;
+}
+
+footer {
+  background: #FFFFFF;
+}
+
+li a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.post-title, .post-data {
+  text-align: left !important;
+}
+
 .hljs {
   display: block;
   overflow-x: auto;
@@ -959,7 +1096,7 @@ grayscale style (c) MY Sun <simonmysun@gmail.com>
 
 .hljs-number,
 .hljs-literal {
-  color: #777;
+  color: #591FCE;
 }
 
 .hljs-string,
@@ -1033,205 +1170,37 @@ grayscale style (c) MY Sun <simonmysun@gmail.com>
 }
 
 .hljs-built_in {
-  color: #08a5b4 !important;
-}
-
-pre code {
-  display: block;
-  background: white;
-  color: #4d4d4c;
-  font-family: Menlo, Monaco, Consolas, monospace;
-  line-height: 1.5;
-  border: 1px solid #ccc;
-  padding: 10px;
+  color: #591FCE !important;
 }
 
 .hljs-built_in, .hljs-builtin-name {
-  color: #08a5b4;
-}
-
-body {
-  color: #566368;
-  font-family: "Open Sans", "Arial", sans-serif;
-}
-
-h1, h2, h3, .archive-heading, h4, h5, h6 {
-  color: #3f484c;
-  font-family: "Nunito", sans-serif;
-}
-
-a {
-  color: #3f484c;
-  text-decoration: underline;
-  text-decoration-color: #6d7e84;
-  transition: all 0.5s ease !important;
-}
-a:hover {
-  text-decoration: none;
+  color: #591FCE;
 }
 
 p a {
-  color: #5bcb8d;
+  color: #591FCE;
   text-decoration: none;
 }
 p a:hover {
-  color: #a9e3c3 !important;
-}
-
-code {
-  background-color: #FEFEFE;
-  border-color: #cbcbcb;
-  border-radius: 3px;
-  font-family: "Source Code Pro", monospace;
-}
-
-pre {
-  border-radius: 3px;
-}
-
-nav {
-  display: none;
-}
-
-nav.links {
-  text-transform: uppercase;
-  font-family: "Source Code Pro", monospace;
+  color: #591FCE !important;
 }
 
 blockquote {
-  background-color: #FEFEFE;
-  border-left: 5px solid #82d7a8;
-  border-radius: 5px 0 0 0;
-  color: #bebebe;
-}
-
-figcaption {
-  color: #cbcbcb;
-  font-style: italic;
-}
-
-#index-header {
-  display: none;
-}
-
-.byline {
-  display: inline;
-}
-.byline a {
-  text-decoration: none;
-}
-
-#mini-nav button {
-  background: #3f484c;
-  color: #FFF;
-}
-#mini-nav button:hover {
-  cursor: pointer;
-}
-#mini-nav nav {
-  background: #3f484c;
-  border-radius: 6px;
-}
-#mini-nav nav li a {
-  color: #FFF;
-}
-#mini-nav nav li a:hover {
-  color: #EEE;
-  cursor: pointer;
-}
-
-.post-title a, .pagination a {
-  color: #566368;
-  text-decoration: none;
-}
-.post-title a:hover, .pagination a:hover {
-  color: #82d7a8;
-}
-
-#sidebar {
-  background: url("http://i.imgur.com/lVUj8bp.png");
-  background-size: 70%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #F7F7F7;
-}
-#sidebar * {
-  color: #000;
-  font-family: "Nunito", sans-serif;
-  text-align: left;
-}
-
-#matter {
-  width: inherit;
-  height: inherit;
-  position: absolute;
-}
-
-#projects {
-  visibility: hidden;
-}
-#projects h3, #projects .archive-heading, #projects h5 {
-  background: #08a5b4;
-  padding: 0 5px;
-}
-#projects h3 a, #projects .archive-heading a, #projects h5 a {
-  text-decoration: underline;
-}
-#projects h5 {
-  width: 120px;
-}
-
-#title {
-  margin-top: 30px;
-}
-#title h2 {
-  text-align: center;
-  text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
-}
-
-.box {
-  padding: 10px;
-  background: #FFF;
-  border: 1px solid #CCC;
-  border-radius: 3px;
-}
-
-blockquote {
-  border-left: 4px solid #08a5b4;
+  border-left: 1px solid #591FCE;
   color: #888;
   border-radius: 0px;
+  font-style: italic;
+  margin-bottom: 10px;
 }
 
 mark {
-  color: #FFFFFF;
-  background-color: #08a5b4;
-}
-
-footer {
-  background: #FFFFFF;
-}
-
-li a {
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.post-title, .post-data {
-  text-align: left !important;
-}
-
-
-mark {
-  display: inline-block;
   line-height: 0em;
-  padding-bottom: 0.5em;
-  background-color: rgba(237, 125, 101, 0.3);
-}
-
-mark:hover {
-  background-color: rgba(237, 125, 101, 0.6)
+  border-bottom: 2px dotted;
+  border-bottom-color: #591FCE;
+  background: none;
+  padding-bottom: 0px;
 }
 
 #header h3 {
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid #591FCE;
 }
