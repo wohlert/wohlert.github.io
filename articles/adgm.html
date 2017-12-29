@@ -19,13 +19,12 @@
     .container {
       margin: 0 auto;
       width: 400px;
-      padding: 0 20px;
       display: grid;
       grid-template-columns: 1fr 2fr;
       grid-template-rows: auto 1fr;
       grid-column-gap: 20px;
     }
-    .container h4 {
+    h4 {
       text-transform: uppercase;
       font-weight: bold;
       min-width: 200px;
@@ -66,10 +65,9 @@
 <p>In thermodynamics, the Helmholtz free energy is a thermodynamic potential that measures the &quot;useful&quot; work obtainable from a closed thermodynamic system at a constant temperature and volume. The negative of the difference in the Helmholtz energy is equal to the maximum amount of work that the system can perform in a thermodynamic process in which volume is held constant. If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.</p>
 </blockquote>
 
-<figure style="float:left">
+<figure style="float:left; width:400px; padding:20px;">
+    <div id="l-field" style="float: left; width: 400px;"></div>
     <div class="container">
-      <div id="l-field" style="float: left"></div>
-      <div></div>
       <div id="z-field" style="float: left"></div>
       <div>
         <h4>Generated image</h4>
@@ -225,32 +223,22 @@ function DrawingField(callback, element, height, width) {
     .append("svg")
     .attr("class", "latent")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .on("click", click);
 
-  svg.append("circle")
+  let circle = svg.append("circle")
       .attr("transform", (d) => `translate(${width/2}, ${height/2})`)
-      .attr("r", 5)
-      .call(d3.drag()
-        .on("start", startDrag)
-        .on("drag", performDrag)
-        .on("end", endDrag));
+      .attr("r", 5);
 
-  function startDrag() {
-    d3.select(this).raise();
-  }
-
-  function performDrag(shape) {
+  function click() {
     const points = 50;
 
-    let dx = d3.event.sourceEvent.offsetX,
-        dy = d3.event.sourceEvent.offsetY;
+    let dx = d3.event.offsetX,
+        dy = d3.event.offsetY;
 
     let location = `(${(dx - width/2)/points}, ${(dy - height/2)/points})`
+    circle.attr("transform", `translate(${dx}, ${dy})`); 
     d3.select(`${element}-value`).text(location)
-    d3.select(this).attr("transform", `translate(${dx}, ${dy})`); 
-  }
-
-  function endDrag(shape) {
     callback(d3.select(this).attr("transform"));
   }
 }
@@ -273,7 +261,7 @@ function MultinomialField(callback, element, width, choices) {
   let svg = d3.select(element)
       .append("svg")
       .attr("width", width)
-      .attr("height", 30);
+      .attr("height", 8);
 
   let rectangles = svg.selectAll("rect")
     .data(d3.range(choices))
@@ -281,7 +269,7 @@ function MultinomialField(callback, element, width, choices) {
       .attr("x", (d) => d*(width/choices))
       .attr("y", 0)
       .attr("height", (width/choices))
-      .attr("width", 15)
+      .attr("width", 50)
       .attr("fill", "#DDDDDD")
       .attr("stroke", "#FFF")
       .attr("stroke-width", 1)
@@ -339,7 +327,7 @@ function ImageField(element, height, width) {
 const dim = 150;
 
 let updateFunction = ImageField("#image-field", dim, dim)
-let l = MultinomialField(updateFunction, "#l-field", dim, 10);
+let l = MultinomialField(updateFunction, "#l-field", 370, 10);
 let z = DrawingField(updateFunction, "#z-field", dim, dim);
 
 </script>
