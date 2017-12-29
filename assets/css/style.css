@@ -6,7 +6,7 @@
  * This means no classes or ids in
  * this file.
  */
-@import url(https://fonts.googleapis.com/css?family=Nunito:300,400);
+@import url(https://fonts.googleapis.com/css?family=Nunito:300,400,700);
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, .archive-heading, h4, h5, h6, p, blockquote, pre,
@@ -752,7 +752,7 @@ img.full-js {
   #social, #title, #title {
     text-align: right;
     right: 100px;
-    width: 300px;
+    
   }
 
   h1 {
@@ -1203,4 +1203,20 @@ mark {
 
 #header h3 {
   border-bottom: 2px solid #591FCE;
+}
+
+#title {
+  text-decoration: none;
+}
+
+.footnotes {
+  background: none;
+  border-top: 1px solid #DDD;
+  color: #BBB;
+}
+
+
+.footnotes span, .footnotes h3 {
+  font-weight: 600;
+  color: #BBB;
 }

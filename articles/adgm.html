@@ -8,12 +8,40 @@
     <script src="https://unpkg.com/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../assets/js/highlight.pack.js"></script>
+    <style>
+    .latent {
+      background-image: -webkit-repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
+      background-image: repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
+      background-size: 15px 15px;
+    }
+    .container {
+      margin: 0 auto;
+      width: 400px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      grid-template-rows: auto 1fr;
+      grid-column-gap: 20px;
+    }
+    .container h4 {
+      text-transform: uppercase;
+      font-weight: bold;
+      min-width: 200px;
+    }
+    circle {
+      fill: #591FCE;
+      stroke-width: 2px;
+      pointer-events: all;
+      cursor: -webkit-grabbing;
+    }
+    </style>
   </head>
   <body class="post-template">
     <div id="header">
       <h3>
-        <a href="../index.html" style="text-decoration:none;">
+        <a id="title" href="../index.html">
           wohlert.nu
         </a>
       </h3>
@@ -30,93 +58,89 @@
           </span>
         </header>
         <section itemprop="articleBody text" class="post-content">
-          <p>
-            The Auxiliary Deep Generative Network (ADGM) <a href="https://arxiv.org/abs/1602.05473">[Maaløe 2016]</a> describes
-            a generative model based on a variational autoencoder, which is enabled
-            for semi-supervised learning.
-          </p>
+                <p>The Auxiliary Deep Generative Network (ADGM)<a href="https://arxiv.org/abs/1602.05473">[Maaløe 2016]</a> describes a generative model based on a variational autoencoder, which is enabled for semi-supervised learning<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h2>Model performance</h2>
+<p>Notice how well the model performs in these charts.</p>
+<p><div id="chart"></div></p>
+<blockquote>
+<p>In thermodynamics, the Helmholtz free energy is a thermodynamic potential that measures the &quot;useful&quot; work obtainable from a closed thermodynamic system at a constant temperature and volume. The negative of the difference in the Helmholtz energy is equal to the maximum amount of work that the system can perform in a thermodynamic process in which volume is held constant. If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.</p>
+</blockquote>
 
-          <h2>Model performance</h2>
-          <p>
-                Notice how well the model performs in these charts.
-          </p>
-          <div id="chart"></div>
+<figure style="float:left">
+    <div class="container">
+      <div id="l-field" style="float: left"></div>
+      <div></div>
+      <div id="z-field" style="float: left"></div>
+      <div>
+        <h4>Generated image</h4>
+        <div id="image-field" style="float: left"></div>
+      </div>
+    </div>
+    <figcaption>Latent space playground <span style="font-weight:bold;">(interactive)</span>.</figcaption>
+</figure>
 
-          <blockquote>
-            <p>In thermodynamics, the Helmholtz free energy is a thermodynamic potential that measures the "useful" work obtainable from a closed thermodynamic system at a constant temperature and volume. The negative of the difference in the Helmholtz energy is equal to the maximum amount of work that the system can perform in a thermodynamic process in which volume is held constant. If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.</p>
-          </blockquote>
-          <p>
-            The model attempts to capture both the labels and the underlying distribution
-            at the same time and improves over [Kingma 2014] by introducing an
-            auxiliary variable $a$. The Lower bound looks like this.
+<p>The model attempts to capture both the labels and the underlying distribution at the same time and improves over [Kingma 2014] by introducing an auxiliary variable \(a\). The Lower bound looks like this.</p>
+<p>\[-\mathcal{L}(x, y) = \mathbb{E}_{q_{\phi}(z|x, y)} [ \log p_{\theta}(x|y, z) + \log p_{\theta}(y) + \log \frac{p(z)}{q_{\phi}(z|x, y)} ]\]</p>
+<p>As a graphical model, it looks as follows<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. Notice how we have added the <mark>auxiliary variable</mark> \(a\) into the model.</p>
+<p>If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.</p>
+<p>We can implement the training loop below.</p>
 
-            $$- \mathcal{L}(x, y) = \mathbb{E}_{q_{\phi}(z|x, y)} [ \log p_{\theta}(x|y, z) + \log p_{\theta}(y) + \log \frac{p(z)}{q_{\phi}(z|x, y)} ]$$
-
-            <figure style="float:right; padding:0px 50px;">
-                <img width="150px" src="../assets/images/nn.svg">
-                <figcaption>
-                    Inference model
-                </figcaption>
-            </figure>
-            
-
-            As a graphical model, it looks as follows. Notice how we have added the
-            <mark>auxiliary variable</mark> $a$ into the model.
-
-            If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.
-          </p>
-          <br>
-          <p>
-            We can implement the training loop below.
-          </p>
-          <pre>
-            <code class="python">class DGMTrainer():
-    def __init__(self, model, objective, optimizer, cuda=False):
+<p>
+    <figure style="float:right; padding: 0 50px;">
+        <img src="../assets/images/nn.svg" style="width:150px"/>
+        <figcaption>Inference model</figcaption>
+    </figure></p>
+    <p>The model attempts to capture both the labels and the underlying distribution at the same time and improves over [Kingma 2014] by introducing an auxiliary variable \(a\). The Lower bound looks like this.</p>
+<p>As a graphical model, it looks as follows<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. Notice how we have added the <mark>auxiliary variable</mark> \(a\) into the model.</p>
+<p>If the volume is not held constant, part of this work will be performed as boundary work. The Helmholtz energy is commonly used for systems held at constant volume. Since in this case no work is performed on the environment, the drop in the Helmholtz energy is equal to the maximum amount of useful work that can be extracted from the system. For a system at constant temperature and volume, the Helmholtz energy is minimized at equilibrium.</p>
+<p>We can implement the training loop below.</p>
+<pre><code class="hljs language-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DGMTrainer</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, model, objective, optimizer, cuda=False)</span>:</span>
         self.model = model
         self.objective = objective
         self.optimizer = optimizer
         self.cuda = cuda
 
-    def calculate_loss(self, x, y=None):
-        is_unlabelled = True if y is None else False
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calculate_loss</span><span class="hljs-params">(self, x, y=None)</span>:</span>
+        is_unlabelled = <span class="hljs-keyword">True</span> <span class="hljs-keyword">if</span> y <span class="hljs-keyword">is</span> <span class="hljs-keyword">None</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">False</span>
 
         x = Variable(x)
         logits = self.model(x)
 
-        # If the data is unlabelled, sum over all classes
-        if is_unlabelled:
+        <span class="hljs-comment"># If the data is unlabelled, sum over all classes</span>
+        <span class="hljs-keyword">if</span> is_unlabelled:
             [batch_size, *_] = x.size()
-            x = x.repeat(n, 1)
-            y = torch.cat([generate_label(batch_size, i, n) for i in range(n)])
+            x = x.repeat(n, <span class="hljs-number">1</span>)
+            y = torch.cat([generate_label(batch_size, i, n) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(n)])
 
         y = Variable(y.type(torch.FloatTensor))
 
-        if self.cuda:
+        <span class="hljs-keyword">if</span> self.cuda:
             x = x.cuda()
-            y = y.cuda()</code>
-          </pre>
+            y = y.cuda()
+</code></pre>
+  
         </section>
       </article>
-      <footer style="background: none; border-top: 1px solid #DDD">
-            <section>
-                <p>
-                    Footnotes:
-                    <ol>
-                        <li>The gradient is actually given by $\nabla w = \frac{\partial f(w)}{\partial w}$.</li>
-                    </ol>
-                    Referenced articles:
-                    <ul>
-                        <li>[Maaløe 2016] Maaløe, L., Sønderby, C. K., Sønderby, S. K., & Winther, O. (2016). Auxiliary deep generative models. <span style="font-style:italic">arXiv preprint arXiv:1602.05473.</span></li>
-                        <li>Goodfellow, I., Pouget-Abadie, J., Mirza, M., Xu, B., Warde-Farley, D., Ozair, S., ... & Bengio, Y. (2014). Generative adversarial nets. <span style="font-style:italic"></span>In Advances in neural information processing systems (pp. 2672-2680).</span></li>
-                    </ul>
-                </p>
-            </section>
-        </footer>
+
+      <section class="footnotes">
+        <h3>Footnotes:</h3>
+      <ol class="footnotes-list">
+      <li id="fn1" class="footnote-item"><p>The gradient is actually given by $\nabla w = \frac{\partial f(w)}{\partial w}$.</p>
+      </li>
+      <li id="fn2" class="footnote-item"><p>There seem to be many different interpretations of $f(z)$, here we use $f(z) = 1/(1+ e^z)$.</p>
+      </li>
+      </ol>
+      </section>
+      
     </main>
   </body>
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
-    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    CommonHTML: { linebreaks: { automatic: true } },
+    "HTML-CSS": { linebreaks: { automatic: true } },
+           SVG: { linebreaks: { automatic: true } }
   });
   </script>
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -165,7 +189,7 @@
     heatline: true,
     //region_fill: true,
     x_axis_mode: 'tick',
-	y_axis_mode: 'span',
+	  y_axis_mode: 'span',
 
     colors: ["#835AF1", "#7FA6EE", "#6FE7DB", "#B8F7D4"],
     // hex-codes or these preset colors;
@@ -178,4 +202,145 @@
     format_tooltip_y: d => d.toFixed(2) + ' Observations'
   });
   </script>
+  <script>
+
+function DrawingField(callback, element, height, width) {
+  /**
+   * 2d Cartesian plane of possible choices
+   * for the latent variable. The pointer in the center
+   * represents the current choice.
+   *
+   * callback: function to be called when dragging of
+   *  pointer ends.
+   * element: HTML element to attach to.
+   * heigh, width: dimensions of svg.
+   */
+  let value = d3.select(element).append("h4")
+    .text("Latent variable: ")
+    .append("span")
+      .attr("id", `${element.substring(1, element.length)}-value`)
+      .text("(0, 0)");
+
+  let svg = d3.select(element)
+    .append("svg")
+    .attr("class", "latent")
+    .attr("width", width)
+    .attr("height", height);
+
+  svg.append("circle")
+      .attr("transform", (d) => `translate(${width/2}, ${height/2})`)
+      .attr("r", 5)
+      .call(d3.drag()
+        .on("start", startDrag)
+        .on("drag", performDrag)
+        .on("end", endDrag));
+
+  function startDrag() {
+    d3.select(this).raise();
+  }
+
+  function performDrag(shape) {
+    const points = 50;
+
+    let dx = d3.event.sourceEvent.offsetX,
+        dy = d3.event.sourceEvent.offsetY;
+
+    let location = `(${(dx - width/2)/points}, ${(dy - height/2)/points})`
+    d3.select(`${element}-value`).text(location)
+    d3.select(this).attr("transform", `translate(${dx}, ${dy})`); 
+  }
+
+  function endDrag(shape) {
+    callback(d3.select(this).attr("transform"));
+  }
+}
+
+function MultinomialField(callback, element, width, choices) {
+  /**
+   * Selection bar representing choice of discrete label.
+   *
+   * callback: function to call when changing label.
+   * element: HTML element to attach to
+   * width: dimension of svg element.
+   * choices: number of labels.
+   */
+   let value = d3.select(element).append("h4")
+    .text("Label: ")
+    .append("span")
+      .attr("id", `${element.substring(1, element.length)}-value`)
+      .text("0");
+
+  let svg = d3.select(element)
+      .append("svg")
+      .attr("width", width)
+      .attr("height", 30);
+
+  let rectangles = svg.selectAll("rect")
+    .data(d3.range(choices))
+    .enter().append("rect")
+      .attr("x", (d) => d*(width/choices))
+      .attr("y", 0)
+      .attr("height", (width/choices))
+      .attr("width", 15)
+      .attr("fill", "#DDDDDD")
+      .attr("stroke", "#FFF")
+      .attr("stroke-width", 1)
+      .attr("id", (d) => d)
+      .on("click", choose)
+
+  // Select first element
+  d3.select(rectangles._groups[0][0]).attr("fill", "#591FCE");
+
+  function choose(d) {
+    d3.selectAll("rect").attr("fill", "#DDDDDD");
+    d3.select(this).attr("fill", "#591FCE");
+    d3.select(`${element}-value`).text(d3.select(this).attr("id"));
+    callback(d3.select(this).attr("id"));
+  }
+}
+
+function ImageField(element, height, width) {
+  /**
+   * Field to draw images onto.
+   * Currently loads these directly from disk, but
+   * should instead calculate them directly.
+   *
+   * element: HTML element to attach to.
+   * height, width: dimensions of the svg.
+   *
+   * return: update function that is to be called
+   * on change.
+   */
+  let svg = d3.select(element)
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  let number = Math.round(Math.random() * 29);
+  let img = svg.append("image")
+      .attr("xlink:href", `http://blog.otoro.net/assets/20160401/png/mnist_input_${number}.png`)
+      .attr("width", width)
+      .attr("height", height);
+
+  function update(id) {
+    number = Math.round(Math.random() * 29);
+    const link = `http://blog.otoro.net/assets/20160401/png/mnist_input_${number}.png`;
+
+    img.attr("xlink:href", link);
+  }
+
+  return update
+}
+
+/*function toUniform(coordinates) {
+  let strings = coordinates.replace(/[^0-9\-.,]/g, '').split(',')
+  return strings.map((d) => parseInt(d)/50 - 2.5)
+}*/
+const dim = 150;
+
+let updateFunction = ImageField("#image-field", dim, dim)
+let l = MultinomialField(updateFunction, "#l-field", dim, 10);
+let z = DrawingField(updateFunction, "#z-field", dim, dim);
+
+</script>
 </html>
