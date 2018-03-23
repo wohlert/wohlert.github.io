@@ -1,0 +1,183 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,600,700);
+@import url(https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,600);
+
+$color-main: #17b978;
+$color-up: #A7FF83;
+$color-down: #086972;
+
+$color-main-u: #FEFEFE;
+$color-primary: darken($color-main, 10%);
+
+
+
+$font: 'Open Sans', 'Arial', sans-serif;
+$font-main: 'Nunito', sans-serif;
+$font-code: 'Source Code Pro', monospace;
+
+$color-text: #566368;
+$color-headline: darken($color-text, 10%);
+
+@import 'highlight';
+
+body {
+  color: $color-text;
+  font-family: $font;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $color-slate;
+  font-family: $font-main;
+  font-weight: 700;
+}
+
+a {
+  color: darken($color-text, 10%);
+  text-decoration: underline;
+  text-decoration-color: lighten($color-text, 10%);
+  transition: all 0.5s ease !important;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+p {
+  a {
+    color: $color-main;
+    text-decoration: none;
+    &:hover { color: lighten($color-main, 25%) !important; }
+  }
+}
+
+code {
+  background-color: $color-main-u;
+  border-color: darken($color-main-u, 20%);
+  border-radius: 3px;
+  font-family: $font-code;
+}
+
+pre {
+  border-radius: 3px;
+}
+
+nav {
+  display: none;
+}
+
+blockquote {
+  background-color: $color-main-u;
+  border-left: 5px solid lighten($color-main, 20%);
+  border-radius: 5px 0 0 0;
+  color: darken($color-main-u, 25%);
+}
+
+figcaption {
+  color: darken($color-main-u, 20%);
+  font-style: italic;
+}
+
+#index-header {
+  display: none;
+}
+
+.byline {
+  display: inline;
+  a { text-decoration: none }
+}
+
+.post-title, .pagination {
+    a {
+        color: $color-text;
+        text-decoration: none;
+        &:hover { color: lighten($color-main, 20%); }
+    }
+}
+
+// !-- SIDEBAR INDEX --! //
+#sidebar {
+  * {
+    color: #000;
+    font-family: $font-main;
+    text-align: left;
+  }
+  background-color: $color-grey-l;
+}
+
+// Overlay for projects
+#matter {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
+
+#projects {
+  visibility: hidden;
+  h3, h5 {
+    background: $color-main;
+    padding: 0 5px;
+    a {
+      text-decoration: underline;
+    }
+  }
+  h5 {
+    width: 120px;
+  }
+}
+
+#title {
+  @extend #social;
+  margin-top: 30px;
+  h2 {
+    text-align: center;
+    text-shadow:
+      -1px -1px 0 #FFF,
+      1px -1px 0 #FFF,
+      -1px 1px 0 #FFF,
+      1px 1px 0 #FFF;
+  }
+}
+
+.box {
+  padding: 10px;
+  background: #FFF;
+  border: 1px solid #CCC;
+  border-radius: 3px;
+}
+
+blockquote {
+  border-radius: 0px;
+  padding: 5px 40px;
+  border: none;
+  color: #888;
+  border-left: 1px solid $color-down;
+}
+
+mark {
+  border-bottom: 2px dotted;
+  border-bottom-color: $color-text;
+  background: none;
+}
+
+#header {
+  h3 {
+    border-bottom: 2px solid $color-main;
+  }
+}
+#presentation {
+  background: linear-gradient(50deg, $color-up 0%, $color-main 51%, $color-down 95%);
+}
+
+.underline {
+  color: $color-headline !important;
+  border-bottom: 2px solid $color-main-u;
+}
+
+hr {
+  border: 0.5px solid #DDD;
+}
+
+#references, #footnotes, .footnotes {
+  + p a, a {
+    color: #BBB;  
+  }
+  color: #BBB;
+}

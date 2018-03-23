@@ -1,0 +1,202 @@
+span.post-data {
+  margin: 0 !important;
+  color: $color-grey;
+}
+
+
+// Global main rules
+main {
+    max-width: $wrapper-width;
+    width: 100%;
+    margin: 0 auto;
+    @include box-sizing(border-box);
+    padding: 1.5em;
+}
+
+// Rules for index page
+main.index {
+      background-color: #FFF;
+      overflow: hidden;
+      max-height: 140vh;
+      padding: 5% 7%;
+      * { font-size: 95%; }
+      .post-title, .pagination {
+          text-align: left;
+          margin: 0;
+          a {
+            color: $color-slate;
+          }
+      }
+      h1 {
+        color: $color-grey-d !important;
+        @include rem-size(1.5);
+        font-weight: 100;
+      }
+      article.post {
+          margin: 1em 0;
+          border-bottom: 2px solid $color-grey-l;
+          padding-bottom: 1em;
+          &:first-child { margin-top: 0; }
+          &:last-child { margin-bottom: 0; }
+          header.meta {
+              h1.post-title, h1.page-title { margin-bottom: 0.5em; }
+          }
+      }
+}
+
+// Rules for CMS pages
+main.post, main.page {
+    article.content {
+        header.meta {
+            span.post-data {
+                display: block;
+                color: $color-grey-d;
+                text-align: center;
+                margin: 1em 0;
+                .tags {
+                    a {
+                        color: $color-grey;
+                        text-underline: none;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+        section.byline {
+            span.author {
+                color: $color-grey-d;
+                font-weight: 300;
+                a {
+                    color: $color-grey;
+                    font-weight: 300;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+}
+
+// Pagination rules
+main.pagination {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    color: $color-grey-d;
+    i {
+      color: $color-grey-d;
+    }
+    .newer-posts, .older-posts {
+      position: absolute;
+    }
+    .newer-posts {
+        left: 0;
+    }
+    .older-posts {
+        right: 0;
+    }
+    .pagination-text {
+        display: none;
+    }
+}
+
+// Footer rules
+footer {
+    color: $color-grey-d;
+    a {
+        color: $color-grey-d;
+        font-weight: 400;
+    }
+    section.colophon {
+        display: block;
+        max-width: $wrapper-width;
+        padding: 2em;
+        margin: 0 auto;
+        @include box-sizing(border-box);
+        text-align: center;
+        section {
+            font-size: 80%;
+            margin-bottom: 0.5em;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.post-nav {
+  display: none;
+  top: 0;
+  margin: 0 30px;
+  font-size: 16px;
+  a {
+    color: white;
+    &:hover { color: white; }
+  }
+  &.prev {
+    float: left;
+  }
+  &.next {
+    float: right;
+  }
+}
+
+.post-data span {
+  margin: 0;
+  padding: 0;
+}
+
+.post-template { background: $color-grey-l; }
+
+.navigation {
+  height: 70px;
+  top: 10px;
+  background: white;
+  .post-nav a {
+    color: $color-slate;
+    background: none;
+    text-decoration: none;
+  }
+}
+
+.tags {
+  h1, h1 a {
+    color: $color-slate;
+    text-align: left;
+  }
+  height: 100vh;
+  ul {
+    margin-left: 0;
+    list-style-type: none;
+  }
+  .post-title, post-data {
+    display: inline;
+  }
+  .post-data {
+    font-size: 70%;
+  }
+}
+
+.archive-heading {
+  @extend h3;
+}
+
+.headline {
+  color: #FFF;
+}
+
+.blog-image {
+  .navigation {
+    background: none;
+    .post-nav a {
+      color: #FFF;
+    }
+  }
+}
+
+#header {
+  @extend .navigation;
+  padding: 5px 10%;
+  * {
+    display: inline-block;
+  }
+}

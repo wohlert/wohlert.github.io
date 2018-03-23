@@ -1,0 +1,177 @@
+/**
+ * Base stylesheet for resetting and
+ * overriding of default styles on
+ * default elements.
+ * This means no classes or ids in
+ * this file.
+ */
+
+//@import "compass/reset";
+//@import "compass/css3";
+//@include global-reset;
+@import 'mixins';
+
+html {
+    height: 100%;
+    max-height: 100%;
+}
+
+body {
+    color: $color-slate;
+    background-color: #FFF;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    height: 100%;
+    line-height: 150%;
+    max-height: 100%;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: Arial, sans-serif;
+    font-weight: 100;
+    color: $color-slate;
+    @include rem-size(2);
+}
+
+h1 {
+    line-height: 1.2em;
+    text-align: center;
+}
+h2 {
+    margin: 1em 0;
+    @include rem-size(1.5);
+}
+h3 {
+    margin: 1em 0;
+    @include rem-size(1.25);
+}
+h4 {
+    margin: 1em 0;
+    @include rem-size(0.75);
+}
+
+h5 {
+    margin: 1em 0;
+    @include rem-size(0.5);
+    text-transform: uppercase;
+}
+
+a {
+    color: blue;
+    background: none;
+    text-decoration: none;
+    transition: text-decoration 200ms ease;
+    &:hover { text-decoration: underline; }
+}
+
+p {
+    line-height: 150%;
+    margin: 1.5em 0;
+}
+
+code {
+    border: 1px solid black;
+    padding: 0 5px;
+    @include rem-size(0.75);
+    font-family: Consolas, monospace;
+    white-space: nowrap;
+}
+
+pre {
+    margin: 1.5em 0;
+    @include rem-size(0.75);
+    line-height: 19px;
+    overflow: auto;
+    padding: 0;
+    code {
+        @include round-corners;
+        padding: 2em !important;
+        border: none;
+        white-space: pre-wrap;
+        text-overflow: clip;
+    }
+}
+
+img {
+    @include round-corners;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: {
+        left: auto;
+        right: auto;
+    };
+}
+
+ol {
+    list-style: decimal;
+    margin-left: 24px;
+    li {
+        margin: 0.5em 0;
+        ol { list-style: lower-alpha; }
+        ul { list-style: square; }
+    }
+
+}
+
+ul {
+    margin-left: 18px;
+    list-style: square;
+    line-height: 1.5em;
+    list-style-type: circle;
+    li {
+        margin: 0.5em 0;
+        ol { list-style: decimal; }
+        ul { list-style: circle; }
+    }
+}
+
+em { font-style: italic; }
+
+strong { font-weight: 700; }
+
+sup {
+  vertical-align: super;
+  @include rem-size(0.75);
+}
+
+blockquote {
+    padding: 10px 20px;
+    background-color: white;
+    color: darken($color-grey, 35%);
+    p { font-style: italic; }
+}
+
+q {
+    @include rem-size(0.6);
+    display: block;
+    width: 100%;
+    margin: {
+        left: 0;
+        top: 1.5em;
+        bottom: 1.5em;
+        right: 0;
+    };
+    font-weight: 300;
+    line-height: 130%;
+    text-align: center;
+    font-style: italic;
+    &::before { content: "\201C"; }
+    &::after { content: "\201D"; }
+}
+
+kbd {
+    border-radius: 3px;
+    padding: 0px 10px;
+    background-color: $color-grey-l;
+    border: 1px solid $color-grey;
+    white-space: nowrap;
+    cursor: default;
+    display: inline-block;
+}
+
+figcaption {
+    text-align: center;
+    color: $color-grey;
+    margin-top: 10px;
+}
