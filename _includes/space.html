@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vector space</title>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="{{ assets/css/style.css | relative_url }}">
+  <style>
+    .latent {
+      /*border: 1px solid #DDD;*/
+      margin: 10px;
+      background-image: -webkit-repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
+      background-image: repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
+      background-size: 15px 15px;
+    }
+    .container {
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.1fr 1.5fr 2fr;
+      grid-column-gap: 20px;
+    }
+    .container h4 {
+      text-transform: uppercase;
+    }
+    circle {
+      fill: #FFF;
+      stroke: #591FCE;
+      stroke-width: 2px;
+      pointer-events: all;
+      cursor: -webkit-grabbing;
+    }
+  </style>
+</head>
+<body>
+  <main style="overflow: hidden">
+    <div class="container">
+      <div>
+        <h4>Label</h4>
+        <div id="l-field" style="height: 250px; float: left"></div>
+      </div>
+      <div>
+        <h4>Latent variable z</h4>
+        <div id="z-field" style="width: 250px; float: left"></div>
+      </div>
+      <div>
+        <h4>Generated image</h4>
+        <div id="image-field" style="width: 250px; float: left"></div>
+      </div>
+    </div>
+  </main>
+</body>
+<script>
+
+function DrawingField(callback, element, height, width) {
+  /**
+   * 2d Cartesian plane of possible choices
+   * for the latent variable. The pointer in the center
+   * represents the current choice.
+   *
+   * callback: function to be called when dragging of
+   *  pointer ends.
+   * element: HTML element to attach to.
+   * heigh, width: dimensions of svg.
+   */
+  let svg = d3.select(element)
+    .append("svg")
+    .attr("class", "latent")
+    .attr("width", width)
+    .attr("height", height);
+
+  svg.append("circle")
+      .attr("transform", (d) => `translate(${width/2}, ${height/2})`)
+      .attr("r", 5)
+      .call(d3.drag()
+        .on("start", startDrag)
+        .on("drag", performDrag)
+        .on("end", endDrag));
+
+  function startDrag() {
+    d3.select(this).raise();
+  }
+
+  function performDrag(shape) {
+    let dx = d3.event.sourceEvent.offsetX,
+        dy = d3.event.sourceEvent.offsetY;
+
+    d3.select(this).attr("transform", `translate(${dx}, ${dy})`); 
+  }
+
+  function endDrag(shape) {
+    callback(d3.select(this).attr("transform"));
+  }
+}
+
+function MultinomialField(callback, element, height, choices) {
+  /**
+   * Selection bar representing choice of discrete label.
+   *
+   * callback: function to call when changing label.
+   * element: HTML element to attach to
+   * height: dimension of svg element.
+   * choices: number of labels.
+   */
+  let svg = d3.select(element)
+      .append("svg")
+      .attr("width", 20)
+      .attr("height", height);
+
+    svg.selectAll("rect")
+       .data(d3.range(choices))
+       .enter().append("rect")
+        .attr("x", 0)
+        .attr("y", (d) => d*(height/choices))
+        .attr("height", (height/choices))
+        .attr("width", 20)
+        .attr("fill", "#DDDDDD")
+        .attr("stroke", "#FFF")
+        .attr("stroke-width", 1)
+        .attr("id", (d) => d)
+        .on("click", choose);
+
+  function choose(d) {
+    d3.selectAll("rect").attr("fill", "#DDDDDD");
+    d3.select(this).attr("fill", "#591FCE");
+    callback(d3.select(this).attr("id"));
+  }
+}
+
+function ImageField(element, height, width) {
+  /**
+   * Field to draw images onto.
+   * Currently loads these directly from disk, but
+   * should instead calculate them directly.
+   *
+   * element: HTML element to attach to.
+   * height, width: dimensions of the svg.
+   *
+   * return: update function that is to be called
+   * on change.
+   */
+  let svg = d3.select(element)
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  let img = svg.append("image")
+      .attr("xlink:href", "http://blog.otoro.net/assets/20160401/png/mnist_input_16.png")
+      .attr("width", width)
+      .attr("height", height);
+
+  function update(id) {
+    let number = Math.round(Math.random() * 29);
+    const link = `http://blog.otoro.net/assets/20160401/png/mnist_input_${number}.png`;
+
+    img.attr("xlink:href", link);
+  }
+
+  return update
+}
+
+/*function toUniform(coordinates) {
+  let strings = coordinates.replace(/[^0-9\-.,]/g, '').split(',')
+  return strings.map((d) => parseInt(d)/50 - 2.5)
+}*/
+
+let updateFunction = ImageField("#image-field", 250, 250)
+let l = MultinomialField(updateFunction, "#l-field", 250, 10);
+let z = DrawingField(updateFunction, "#z-field", 250, 250);
+
+</script>
+</html>

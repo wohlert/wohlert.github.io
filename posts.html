@@ -1,13 +1,12 @@
 ---
 layout: default
 ---
-<div id="presentation">
-  <p class="description">Latest articles</p>
+<div id="presentation" style="background:#FFFFFF;">
   <!-- Content -->
   <main class="index" role="main">
-    {% for post in site.posts limit:2 %}	
+    {% for post in site.posts limit %}	
       <article itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" class="post">
-        <header class="meta">
+        <header class="meta" style="display:inline;">
           <h1 class="post-title" itemprop="name headline"><a href="{{ post.url }}"  itemprop="url">{{ post.title }}</a></h1>
           <span class="post-data">
             <time
@@ -19,7 +18,6 @@ layout: default
             {{ post.date | date: "%B %e, %Y" }}
             </time>
           </span>
-        <div class="post-content-short">{{ post.description }}</div>
         </header>
       </article>
     {% endfor %}

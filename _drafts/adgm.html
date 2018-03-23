@@ -1,0 +1,40 @@
+<style>
+.latent {
+  background-image: -webkit-repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
+  background-image: repeating-radial-gradient(center center, rgba(0,0,0,.2), rgba(0,0,0,.2) 1px, transparent 1px, transparent 100%);
+  background-size: 15px 15px;
+}
+.container {
+  margin: 0 auto;
+  width: 400px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto 1fr;
+  grid-column-gap: 20px;
+}
+h4 {
+  text-transform: uppercase;
+  font-weight: bold;
+  min-width: 200px;
+}
+circle {
+  fill: #591FCE;
+  stroke-width: 2px;
+  pointer-events: all;
+  cursor: -webkit-grabbing;
+}
+</style>
+
+<figure style="float:left; width:400px; padding:20px;">
+    <div id="l-field" style="float: left; width: 400px;"></div>
+    <div class="container">
+      <div id="z-field" style="float: left"></div>
+      <div>
+        <h4>Generated image</h4>
+        <div id="image-field" style="float: left"></div>
+      </div>
+    </div>
+    <figcaption>Latent space playground <span style="font-weight:bold;">(interactive)</span>.</figcaption>
+</figure>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
