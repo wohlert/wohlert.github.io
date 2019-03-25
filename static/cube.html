@@ -58,8 +58,7 @@
 			}
 		}
 
-		var sprite = new THREE.TextureLoader().load("../assets/images/disc.png")
-		var material = new THREE.PointsMaterial({ color : 0x000000, size: 0.1, map: sprite});
+		var material = new THREE.PointsMaterial({ color : 0x000000, size: 0.1});
 		var object = new THREE.Points( geometry, material );
 
 		scene.add(object);
