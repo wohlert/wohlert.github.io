@@ -1,23 +1,37 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,600,700);
-@import url(https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,600);
 
-$color-main: #17b978;
-$color-up: #A7FF83;
-$color-down: #086972;
+@font-face {
+  font-family: 'Big Caslon Medium';
+  src: url('../fonts/big-caslon-medium.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/big-caslon-medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/big-caslon-medium.woff') format('woff'),
+       url('../fonts/big-caslon-medium.ttf') format('truetype');
+}
+
+$color-main: #dd5b82;
+$color-up: #ff8b00;
+$color-down: #241e92;
 
 $color-main-u: #FEFEFE;
 $color-primary: darken($color-main, 10%);
 
-
-
 $font: 'Open Sans', 'Arial', sans-serif;
-$font-main: 'Nunito', sans-serif;
+$font-main: "Big Caslon", "Big Caslon Medium", "Palatino", "Georgia", serif;
 $font-code: 'Source Code Pro', monospace;
 
 $color-text: #566368;
 $color-headline: darken($color-text, 10%);
 
 @import 'highlight';
+
+.fa-rss-square { color: $color-main; }
+
+#presentation {
+  .description {
+    color: #555;
+  }
+  border-radius: 5px;
+}
 
 body {
   color: $color-text;
@@ -31,9 +45,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-  color: darken($color-text, 10%);
+  color: black;
   text-decoration: underline;
-  text-decoration-color: lighten($color-text, 10%);
+  text-decoration-color: lighten($color-main, 10%);
   transition: all 0.5s ease !important;
   &:hover {
     text-decoration: none;
@@ -44,7 +58,7 @@ p {
   a {
     color: $color-main;
     text-decoration: none;
-    &:hover { color: lighten($color-main, 25%) !important; }
+    &:hover { color: saturate($color-main, 25%) !important; }
   }
 }
 
@@ -144,11 +158,11 @@ figcaption {
 }
 
 blockquote {
-  border-radius: 0px;
+  border-radius: 5px;
   padding: 5px 40px;
   border: none;
-  color: #888;
-  border-left: 1px solid $color-down;
+  color: $color-text;
+  border: 1px solid #ccc;
 }
 
 mark {
@@ -159,11 +173,17 @@ mark {
 
 #header {
   h3 {
-    border-bottom: 2px solid $color-main;
+    border-bottom: 2px solid #000;//$color-main;
   }
 }
+
+.links, #header>h3, .post-title, .site-name {
+    font-family: $font-main;
+}
+
 #presentation {
-  background: linear-gradient(50deg, $color-up 0%, $color-main 51%, $color-down 95%);
+  //background: linear-gradient(50deg, $color-up 0%, $color-main 51%, $color-down 95%);
+  background: #EEE;
 }
 
 .underline {
@@ -177,7 +197,92 @@ hr {
 
 #references, #footnotes, .footnotes {
   + p a, a {
-    color: #BBB;  
+    color: #BBB;
   }
   color: #BBB;
+}
+
+.title {
+  text-align: left;
+  a {
+    text-decoration: none;
+  }
+}
+
+.category {
+  border: 1px solid #000;
+  color: #000;
+  background-image: repeating-linear-gradient(45deg, #FFF, #FFF 2px, #EEE 4px, #EEE 1px);
+  padding: 5px 15px;
+  display: inline-block;
+  border-radius: 3px;
+  margin: 10px 0px;
+  display: none;
+}
+
+.wide {
+  width: 100% !important;
+  max-height: none !important;
+  max-width: none !important;
+  .post {
+    width: 20%;
+    min-width: 150px;
+    padding: 10px;
+    margin: 5px;
+    display: inline-block;
+    border: 1px dotted #EEE;
+    border-bottom: 3px solid #000;
+  }
+}
+
+#about {
+    h1 {
+        color: $color-text !important;
+        font-weight: 800;
+    }
+    .sign {
+        color: $color-main;
+        font-weight: 800;
+    }
+}
+
+.content > .meta {
+    text-align: center;
+}
+
+.fade-in {
+ -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s; /* Firefox < 16 */
+     -ms-animation: fadein 1s; /* Internet Explorer */
+      -o-animation: fadein 1s; /* Opera < 12.1 */
+         animation: fadein 1s;
+}
+
+@keyframes fadein {
+ from { opacity: 0; }
+ to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+ from { opacity: 0; }
+ to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+ from { opacity: 0; }
+ to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+ from { opacity: 0; }
+ to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+ from { opacity: 0; }
+ to   { opacity: 1; }
 }

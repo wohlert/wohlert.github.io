@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - convex geometry</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			canvas {
+				padding: 0;
+			    margin: auto;
+			    display: block;
+			    width: 800px;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
+		<script type="text/javascript" src="../assets/js/OrbitControls.js"></script>
+		<script>
+		const height = 300;
+		const width = 300;
+
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+
+		var renderer = new THREE.WebGLRenderer({
+			alpha: true,
+			antialias: true
+		});
+		renderer.setSize(width, height);
+		document.body.appendChild(renderer.domElement);
+
+		var controls = new THREE.OrbitControls(camera);
+		camera.position.set(0, 0, 10);
+		controls.update();
+
+		let sphere = createSphere();
+		scene.add(sphere.frame);
+		//scene.add(sphere.sphere);
+
+		function randomSpherePoint(x0, y0, z0, radius){
+		   var u = Math.random();
+		   var v = Math.random();
+		   var theta = 2 * Math.PI * u;
+		   var phi = Math.acos(2 * v - 1);
+		   var x = x0 + (radius * Math.sin(phi) * Math.cos(theta));
+		   var y = y0 + (radius * Math.sin(phi) * Math.sin(theta));
+		   var z = z0 + (radius * Math.cos(phi));
+		   return [x, y, z];
+		}
+
+		let geometry = new THREE.Geometry();
+		let n = 1000;
+		for (let i = 0; i < n; i++) {
+			var [x, y, z] = randomSpherePoint(0, 0, 0, Math.PI-0.15);
+			if (!(y^2 < 1) || !(x^2 < 1) || !(z^2 < 1)) {
+				geometry.vertices.push(new THREE.Vector3(x, y, z));
+			}
+		}
+
+		var sprite = new THREE.TextureLoader().load("../assets/images/disc.png")
+		var material = new THREE.PointsMaterial({ color : 0x000000, size: 0.1, map: sprite});
+		var object = new THREE.Points( geometry, material );
+
+		scene.add(object);
+
+		/*
+		let plane = createTangent();
+		scene.add(plane.frame);
+		scene.add(plane.plane);
+		*/
+
+		function createSphere() {
+			const subdivs = 30;
+
+			var geometry = new THREE.SphereGeometry(3, subdivs, subdivs, 0, Math.PI * 2, 0, Math.PI);
+			var material = new THREE.MeshBasicMaterial({color: 0xffffff});
+			var sphere = new THREE.Mesh(geometry, material);
+
+			var wireframe = new THREE.WireframeGeometry(geometry);
+			var frame = new THREE.LineSegments(wireframe);
+
+			frame.material.opacity = 0.1;
+			frame.material.transparent = true;
+			frame.material.color = new THREE.Color(0x000000);
+
+			return {"sphere": sphere, "frame": frame};
+		}
+
+		function createTangent() {
+			var geometry = new THREE.PlaneGeometry(5, 5, 10, 10);
+			var material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
+			var plane = new THREE.Mesh(geometry, material);
+
+			var wireframe = new THREE.WireframeGeometry(geometry);
+			var frame = new THREE.LineSegments(wireframe);
+
+			frame.material.opacity = 0.1;
+			frame.material.transparent = true;
+			frame.material.color = new THREE.Color(0x000000);
+
+			frame.position.y = Math.PI;
+			frame.rotation.x = Math.PI * 1/2;
+
+			plane.position.y = Math.PI;
+			plane.rotation.x = Math.PI * 1/2;
+
+			return {"plane": plane, "frame": frame};
+		}
+
+		function animate() {
+			requestAnimationFrame(animate);
+			// required if controls.enableDamping or controls.autoRotate are set to true
+			controls.update();
+			renderer.render(scene, camera);
+		}
+
+		animate();
+		</script>
+	</body>
+</html>

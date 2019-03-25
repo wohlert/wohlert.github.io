@@ -27,11 +27,11 @@ img.full-js {
   left: 0 !important;
 }
 
-.links {
-  display: none;
-}
+.external { display: none !important; }
 
 @media screen and (min-width: $mobile-width){ // Mobile and higher resolutions
+  .external { display: inline !important; }
+
   h1 {
     @include rem-size(1.5);
     a {
@@ -55,6 +55,10 @@ img.full-js {
   }
 }
 
+.external {
+    display: none;
+}
+
 @media screen and (min-width: $tablet-width){ // Tablet and higher resolutions
   .links {
     display: inline-block;
@@ -68,6 +72,7 @@ img.full-js {
     .description {
       font-size: 2vw;
       max-width: 9999px;
+      width: 400px;
     }
   }
 
@@ -181,10 +186,6 @@ img.full-js {
   }
   main {
     padding: 2em;
-    h1.post-title, h1.page-title {
-      width: 110%;
-      margin-left: -5%;
-    }
     &.index {
       overflow: scroll;
       article.post {
@@ -288,10 +289,6 @@ img.full-js {
       article.post {
         margin: 2em 0;
       }
-    }
-    h1.post-title, h1.page-title {
-      width: 125%;
-      margin-left: -12.5%;
     }
   }
 }

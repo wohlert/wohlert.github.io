@@ -1,12 +1,22 @@
 <div id="header">
   <h3>
-    <a href="{{ site.baseurl }}" style="text-decoration: none;">{{ site.title }}</a>
+    <a href="{{ site.baseurl }}" style="text-decoration: none;">{{ site.title | downcase }}</a>
   </h3>
   <nav class="links">
     <ul>
-        <li><a title="Posts" href="{{ 'posts' | relative_url }}"><i class="fa fa-list"></i></a></li>
-        <li><a title="Github" href="https://github.com/wohlert" target="_blank"><i class="fa fa-github"></i></a></li>
-        <li><a title="Atom feed" href="{{ 'feed.xml' | relative_url }}"><i class="fa fa-rss-square"></i></a></li>
+        <li><a title="Posts" href="{{ 'posts' | relative_url }}">
+          <span style="font-weight: 800;">posts</span></a>
+          <!-- <i class="fa fa-list"></i></a> -->
+        </li>
+        <li><a title="About" href="{{ 'about' | relative_url }}">
+            <span style="font-weight: 800;">about</span></a>
+          </li>
+        <li class="external"><a title="Github" href="https://github.com/wohlert" target="_blank">
+          <i class="fa fa-github"></i></a>
+        </li>
+        <li class="external"><a title="Atom feed" href="{{ 'feed.xml' | relative_url }}">
+          <i class="fa fa-rss-square"></i></a>
+        </li>
     </ul>
   </nav>
 </div>
