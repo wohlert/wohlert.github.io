@@ -8,7 +8,7 @@
         <header class="meta">
           <h1 class="post-title">{{ page.title }}</h1>
           <span class="post-data">
-              <time class="date" itemprop="datePublished" datetime="{{ site.time | date_to_xmlschema }}" title="{{ site.time | date_to_string }}">Published on {{ site.time | date_to_string }}
+              <time class="date" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}" title="{{ page.date | date_to_string }}">Published on {{ page.date | date_to_string }}
               </time>
               <section class="byline" style="display:none;"> <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name" rel="author">Jesper Wohlert</span></span>
               </section>

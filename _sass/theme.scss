@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,600,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 
 @font-face {
   font-family: 'Big Caslon Medium';
@@ -8,12 +8,12 @@
        url('../fonts/big-caslon-medium.ttf') format('truetype');
 }
 
-$color-main: #dd5b82;
-$color-up: #ff8b00;
-$color-down: #241e92;
+$color-main: #8158fc;
+$color-second: #aa58fc;
+
+$color-primary: darken($color-main, 10%);
 
 $color-main-u: #FEFEFE;
-$color-primary: darken($color-main, 10%);
 
 $font: 'Open Sans', 'Arial', sans-serif;
 $font-main: "Big Caslon", "Big Caslon Medium", "Palatino", "Georgia", serif;
@@ -24,13 +24,40 @@ $color-headline: darken($color-text, 10%);
 
 @import 'highlight';
 
-.fa-rss-square { color: $color-main; }
+@keyframes gradientflow {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+@-moz-keyframes gradientflow {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+@-webkit-keyframes gradientflow {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
 
 #presentation {
   .description {
-    color: #555;
+    color: #000;
+    color: #fff;
   }
   border-radius: 5px;
+  background: #eee;
+  background: linear-gradient(160deg, #e158fc, $color-main, #5873fc);
+  background-size: 300% 300%;
+	animation: gradientflow 10s ease-in-out infinite;
+	-moz-animation: gradientflow 10s ease-in-out infinite;
+	-webkit-animation: gradientflow 10s ease-in-out infinite;
+}
+
+button:focus {
+  outline: none;
 }
 
 body {
@@ -57,8 +84,11 @@ a {
 p {
   a {
     color: $color-main;
+    font-weight: bold;
     text-decoration: none;
-    &:hover { color: saturate($color-main, 25%) !important; }
+    &:hover { 
+      color: black;
+    }
   }
 }
 
@@ -79,9 +109,9 @@ nav {
 
 blockquote {
   background-color: $color-main-u;
-  border-left: 5px solid lighten($color-main, 20%);
-  border-radius: 5px 0 0 0;
-  color: darken($color-main-u, 25%);
+  //border-left: 3px solid lighten($color-main, 30%);
+  padding: 10px 50px;
+  color: $color-text;
 }
 
 figcaption {
@@ -157,14 +187,6 @@ figcaption {
   border-radius: 3px;
 }
 
-blockquote {
-  border-radius: 5px;
-  padding: 5px 40px;
-  border: none;
-  color: $color-text;
-  border: 1px solid #ccc;
-}
-
 mark {
   border-bottom: 2px dotted;
   border-bottom-color: $color-text;
@@ -172,18 +194,16 @@ mark {
 }
 
 #header {
+  span, a, h3 {
+    font-size: 20px;
+  }
   h3 {
-    border-bottom: 2px solid #000;//$color-main;
+    border-bottom: 2px solid $color-main;
   }
 }
 
 .links, #header>h3, .post-title, .site-name {
     font-family: $font-main;
-}
-
-#presentation {
-  //background: linear-gradient(50deg, $color-up 0%, $color-main 51%, $color-down 95%);
-  background: #EEE;
 }
 
 .underline {
@@ -195,7 +215,7 @@ hr {
   border: 0.5px solid #DDD;
 }
 
-#references, #footnotes, .footnotes {
+#references, #footnotes, .proof, .footnotes {
   + p a, a {
     color: #BBB;
   }
@@ -238,11 +258,11 @@ hr {
 #about {
     h1 {
         color: $color-text !important;
-        font-weight: 800;
+        font-weight: 300;
     }
     .sign {
         color: $color-main;
-        font-weight: 800;
+        font-weight: 300;
     }
 }
 
@@ -285,4 +305,27 @@ hr {
 @-o-keyframes fadein {
  from { opacity: 0; }
  to   { opacity: 1; }
+}
+
+.collapse {
+  display: block;
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .5s cubic-bezier(0, 1, 1, 1);; 
+
+  &.show {
+    max-height: 99em;
+    transition: max-height .5s ease-in-out;
+  }
+}
+
+.collapser {
+  margin: 0 auto;
+  display: block;
+  font-size: 30px;
+  color: #ddd;
+  border: none;
+  background: none;
+  transform: rotate(90deg);
+  &:hover { color: #aaa; }
 }
