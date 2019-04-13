@@ -48,13 +48,12 @@ $color-headline: darken($color-text, 10%);
     color: #000;
     color: #fff;
   }
-  border-radius: 5px;
   background: #eee;
   background: linear-gradient(160deg, $color-third, $color-main, $color-second);
   background-size: 300% 300%;
-	animation: gradientflow 4s ease-in-out infinite;
-	-moz-animation: gradientflow 4s ease-in-out infinite;
-	-webkit-animation: gradientflow 4s ease-in-out infinite;
+	animation: gradientflow 8s ease-in-out infinite;
+	-moz-animation: gradientflow 8s ease-in-out infinite;
+	-webkit-animation: gradientflow 8s ease-in-out infinite;
 }
 
 button:focus {
@@ -324,4 +323,23 @@ hr {
   background: none;
   transform: rotate(90deg);
   &:hover { color: #aaa; }
+}
+
+#contact {
+  @extend #presentation;
+  color: #fff;
+  width: 300px;
+  padding: 20px;
+  margin: 0 auto;
+  h2, a {
+    color: #fff;
+  }
+}
+
+.domain-a::before {
+   content: "\0040";    /* Unicode character for @ symbol */
+}
+
+.domain-d::before {
+  content: "\002E";
 }
