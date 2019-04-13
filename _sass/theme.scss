@@ -8,8 +8,9 @@
        url('../fonts/big-caslon-medium.ttf') format('truetype');
 }
 
-$color-main: #8158fc;
-$color-second: #aa58fc;
+$color-main: #8158fc; //$color-main: #8158fc;
+$color-second: #fc588c; //$color-second: #fc588c; //aa58fc
+$color-third: #502cbb;
 
 $color-primary: darken($color-main, 10%);
 
@@ -49,11 +50,11 @@ $color-headline: darken($color-text, 10%);
   }
   border-radius: 5px;
   background: #eee;
-  background: linear-gradient(160deg, #e158fc, $color-main, #5873fc);
+  background: linear-gradient(160deg, $color-third, $color-main, $color-second);
   background-size: 300% 300%;
-	animation: gradientflow 10s ease-in-out infinite;
-	-moz-animation: gradientflow 10s ease-in-out infinite;
-	-webkit-animation: gradientflow 10s ease-in-out infinite;
+	animation: gradientflow 4s ease-in-out infinite;
+	-moz-animation: gradientflow 4s ease-in-out infinite;
+	-webkit-animation: gradientflow 4s ease-in-out infinite;
 }
 
 button:focus {
@@ -73,7 +74,6 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   color: black;
-  text-decoration: underline;
   text-decoration-color: lighten($color-main, 10%);
   transition: all 0.5s ease !important;
   &:hover {
@@ -81,14 +81,11 @@ a {
   }
 }
 
-p {
-  a {
+p a {
+  color: desaturate($color-main, 30%);
+  &:hover { 
     color: $color-main;
-    font-weight: bold;
-    text-decoration: none;
-    &:hover { 
-      color: black;
-    }
+    text-decoration: underline;
   }
 }
 
@@ -207,8 +204,7 @@ mark {
 }
 
 .underline {
-  color: $color-headline !important;
-  border-bottom: 2px solid $color-main-u;
+  border-bottom: 2px dotted $color-main;
 }
 
 hr {

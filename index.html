@@ -8,7 +8,9 @@ layout: default
     {% for post in site.posts limit:3 %}	
       <article itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" class="post">
         <header class="meta">
-          <h1 class="post-title" itemprop="name headline"><a href="{{ post.url }}"  itemprop="url">{{ post.title }}</a></h1>
+          <h1 class="post-title" itemprop="name headline">
+            <a class="underline" href="{{ post.url }}"  itemprop="url">{{ post.title }}</a>
+          </h1>
           <span class="post-data">
             <time
             class="timesince date"
