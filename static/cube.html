@@ -43,8 +43,9 @@
 
 		scene.add(sphere.frame);
 		//scene.add(sphere.sphere);
-		scene.add(createPoints(f, n, {color : 0x000000, size: 0.1}));
-		//scene.add(createPoints(g, 5*n, {color : 0xdd5b82, size: 0.1})); //0xf25d9c
+		scene.add(createPoints(f, 1/3*n, {color : 0x000000, size: 0.05}));
+		scene.add(createPoints(f, 1/3*n, {color : 0x555555, size: 0.10}));
+		scene.add(createPoints(f, 1/3*n, {color : 0x999999, size: 0.15}));
 
 		function randomSpherePoint(x0, y0, z0, radius){
 		   const u = Math.random();

@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Incompressible fluid simulation</title>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+<figure>
+    <svg style="margin: 0 auto; width: 100%" id="fluid-visualisation"></svg>
+    <figcaption>An example of an incompressible fluid (hover / press to displace particles)
+    <label for="check">Compressible?</label><input onclick="compress(this)" type="checkbox" name="check">
+    </figcaption>
+</figure>
+</body>
+<script>
+    class ParticleSimulation {
+        constructor(n, element, height, width) {
+            this.gravity = 0.05;
+            this.viscosity = 1/20;
+            this.element = element;
+            this.height = height;
+            this.width = width;
+
+            this.element
+                .attr("width", width)
+                .attr("height", height);
+
+            this.draw(n);
+        }
+
+        _collide(node, viscosity) {
+            var r = node.radius + 10,
+                nx1 = node.x - r,
+                nx2 = node.x + r,
+                ny1 = node.y - r,
+                ny2 = node.y + r;
+
+            return function(quad, x1, y1, x2, y2) {
+                if (quad.point && (quad.point !== node)) {
+                    var x = node.x - quad.point.x,
+                        y = node.y - quad.point.y,
+                        l = Math.sqrt(x * x + y * y),
+                        r = node.radius + quad.point.radius;
+                    if (l < r) {
+                        l = (l - r) / l * viscosity;
+                        node.x -= x *= l;
+                        node.y -= y *= l;
+                        quad.point.x += x;
+                        quad.point.y += y;
+                    }
+                }
+                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            };
+        }
+
+        run(n) {
+            let force = d3.layout.force()
+                .gravity(this.gravity)
+                .charge((d, i) => i ? 0 : -100 )
+                .nodes(this.nodes)
+                .size([this.width, this.height]);
+
+            force.start();
+
+            let nodes = this.nodes;
+            let collide = (nodes) => this._collide(nodes, this.viscosity);
+            const element = this.element;
+
+            // Every step check collisions
+            force.on("tick", function(e) {
+                let q = d3.geom.quadtree(nodes),
+                    i = 0,
+                    n = nodes.length;
+
+                while (++i < n) {
+                    q.visit(collide(nodes[i]));
+                }
+
+                // Draw particle at new position
+                element.selectAll("circle")
+                    .attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; });
+            });
+
+            let root = nodes[0];
+
+            // On mouseover move root to mouse position
+            this.element.on("mousemove", function() {
+                var p1 = d3.mouse(this);
+                root.px = p1[0];
+                root.py = p1[1];
+                force.resume();
+            });
+        }
+
+        draw(n) {
+            // Define nodes as a radius of size 2, no initial position
+            this.nodes = d3.range(n).map(function() { return {radius: Math.random()*5 + 2}; });
+
+            let color = d3.scale.ordinal()
+                .range(["#888", "#aaa", "#ccc"]);
+
+            // Draw particles
+            this.element.selectAll("circle")
+                .data(this.nodes.slice(1))
+                .enter().append("circle")
+                    .attr("r", (d) => d.radius )
+                    .style("fill", (d, i) => color(i % 3));
+
+            // Fix center of mass
+            let root = this.nodes[0];
+            root.radius = 10;
+            root.fixed = true;
+        }
+    }
+
+    let startSimulation = () => {
+        let width = Math.min(window.innerWidth - 40, 900);
+        const simulation = new ParticleSimulation(250, d3.select("#fluid-visualisation"), 200, width);
+        simulation.run();
+
+        return simulation;
+    }
+
+    let simulation = startSimulation();
+
+    function compress(element) {
+        simulation.viscosity = element.checked ? 0.0 : 1/20;
+    }
+</script>
+</html>

@@ -1,10 +1,10 @@
 ---
 layout: default
 ---
-<div id="presentation" style="background:#FFFFFF;">
+<div id="presentation" style="background: none;">
   <!-- Content -->
-  <main class="index" role="main">
-    {% for post in site.posts limit:3 %}
+  <main class="index" role="main" style='border-left: 2px solid #eeeeee;'>
+    {% for post in site.posts %}
       <article itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" class="post">
         <header class="meta" style="display:inline;">
           <h1 class="post-title" itemprop="name headline"><a href="{{ post.url }}"  itemprop="url">{{ post.title }}</a></h1>

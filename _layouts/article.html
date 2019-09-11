@@ -7,12 +7,29 @@
       <article class="content post">
         <header class="meta">
           <h1 class="post-title">{{ page.title }}</h1>
-          <span class="post-data">
-              <time class="date" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}" title="{{ page.date | date_to_string }}">Published on {{ page.date | date_to_string }}
-              </time>
-              <section class="byline" style="display:none;"> <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name" rel="author">Jesper Wohlert</span></span>
-              </section>
-          </span>
+          <div class="description">
+          <!--
+            <span class="heading">
+              <span style="font-weight: 800">Abstract</span>
+              <p>
+                  {{ page.description }}
+              </p>
+            </span>
+          -->
+            <span class="meta-data heading">
+                <section class="byline" style="display:none;">
+                  <span itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+                    <span itemprop="name" rel="author">Jesper Wohlert</span>
+                  </span>
+                </section>
+                <time class="date" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}" title="{{ page.date | date_to_string }}">Published on {{ page.date | date_to_string }}
+                </time>
+                &nbsp; in
+                {% for category in page.categories %}
+                  <li><a href="{{site.baseurl}}/categories/#{{category|slugize}}">{{category}}</a>&nbsp;&nbsp;/</li>
+                {% endfor %}
+            </span>
+          </div>
         </header>
         <section itemprop="articleBody text" class="post-content">
             {{ content }}

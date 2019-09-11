@@ -5,15 +5,10 @@ layout: default
   <!-- Content -->
   <main class="index" id="about" role="main">
       <h1>
-          <span class="site-name">{{ site.title | downcase }}</span>
-          <span style="font-weight:100;">[ϱ
-              <span class="sign">
-                  <sup>
-                      –
-                  </sup>
-              </span>
-              ]
-          </span>
+        <svg style="position: absolute;">
+        <use xlink:href="{{ '/assets/images/Artboard.svg#Artboard' | relative_url }}"></use>
+    </svg>
+          <span style="color: black; margin-left: 45px" class="site-name">{{ site.title | downcase }}</span>
       </h1>
       <p>
           This is a blog about machine learning and mathematics. The goal is

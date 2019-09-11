@@ -1,20 +1,29 @@
 <div id="header">
   <h3>
+    <svg style="position: absolute; margin-left: -35px;" height="25px" width="25px" viewBox="0 0 35 35">
+        <use xlink:href="{{ '/assets/images/Artboard.svg#Artboard' | relative_url }}"></use>
+    </svg>
     <a href="{{ site.url }}" style="text-decoration: none;">{{ site.title | downcase }}</a>
   </h3>
   <nav class="links">
     <ul>
         <li><a title="Posts" href="{{ 'posts' | relative_url }}">
-          <span>posts</span></a>
-          <!-- <i class="fa fa-list"></i></a> -->
+        <span style="font-family: monospace; color: black; font-size: 18px; color: #9E579D">∅</span></a>
         </li>
-        <li><a title="About" href="{{ 'about' | relative_url }}">
-            <span>about</span></a>
-          </li>
+        <!-- <li><a title="About" href="{{ 'about' | relative_url }}">
+        <span style="font-family: monospace; color: black;">/:</span></a>
+        </li> -->
         <li class="external">
         <a title="Github" href="https://github.com/wohlert" target="_blank">
           <svg class="icon" height="15px" width="15px">
             <use xlink:href="{{ '/assets/images/github.svg#icon' | relative_url }}"></use>
+          </svg>
+        </a>
+        </li>
+        <li class="external">
+        <a title="Twitter" href="https://twitter.com/whlrt" target="_blank">
+          <svg class="icon twitter" height="15px" width="15px">
+            <use xlink:href="{{ '/assets/images/twitter.svg#icon' | relative_url }}"></use>
           </svg>
         </a>
         </li>

@@ -13,9 +13,14 @@
 //$color-third: #502cbb;
 
 // reds
-$color-main: #9E579D;
-$color-second: #574B90;
-$color-third: #303A52;
+$color-main: #dc5353;
+$color-second: #a72461;
+$color-third: #ff8258;
+
+// blues
+$color-main: #17b978;
+$color-second: #a7ff83;
+$color-third: #086972;
 
 
 $color-primary: darken($color-main, 10%);
@@ -199,7 +204,7 @@ mark {
     font-size: 20px;
   }
   h3 {
-    //border-bottom: 2px solid $color-main;
+    border-bottom: 2px solid $color-main;
   }
 }
 
@@ -212,8 +217,7 @@ mark {
 }
 
 hr {
-  border: 0.5px solid #eee;
-  margin : 40px 0;
+  border: 0.5px solid #DDD;
 }
 
 #references, #footnotes, .proof, .footnotes {
@@ -272,8 +276,6 @@ hr {
     color: #aaa !important;
     li {
       margin: 0;
-      padding-left: 10px;
-      list-style-type: none;
     }
     .description {
       display: flex;
@@ -285,12 +287,15 @@ hr {
       .heading {
         display: flex;
         flex-wrap: wrap;
+        border-left: 3px solid #ddd;
+        padding: 0 6px 0 12px;
         p {
           margin: 0;
           padding: 0;
         }
       }
       .meta-data {
+        width: 800px;
       }
       a {
         //color: lighten($color-main, 5%);
@@ -407,25 +412,4 @@ figure {
       width: 200px;
     }
   }
-}
-
-body.post-template {
-  background-color: #fff;
-}
-
-#header {
-  border-bottom: 1px solid #eee;
-  padding: 5px 20%;
-}
-
-#main {
-  background-color: #fff;
-}
-
-.footnotes a {
-    text-decoration: underline;
-}
-
-blockquote {
-  border-left: 2px solid #eee;
 }
