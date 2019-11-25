@@ -141,6 +141,10 @@ img.full-js {
   }
 }
 
+#main {
+  border-left: 0px;
+}
+
 @media screen and (min-width: $desktop-width){ // Desktop higher resolutions
   h1 {
     @include rem-size(2.5);

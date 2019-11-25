@@ -1,0 +1,95 @@
+@media (prefers-color-scheme: dark) {
+  #main, body.post-template, body {
+    background-color: #222 !important;
+    color: #e4e4e4;
+  }
+  @media screen and (min-width: $desktop-width){ // Desktop higher resolutions
+    #main {
+      border-left: 2px solid #333;
+    }
+    
+  }
+
+  h1.post-title, h1, h2, h3, .archive-heading, h4, h5, h6 {
+    color: #ededed !important;
+  }
+
+  a {
+    color: #ffffff;
+  }
+
+  #header {
+    background: #222;
+    border-bottom: 1px solid #444 !important;
+    * {
+      color: #fff;
+    }
+  }
+
+  #presentation {
+    main {
+      background: #222;
+      a {
+        color: #fff;
+      }
+      div {
+        color: #ddd;
+      }
+    }
+
+    .description {
+      width: 200px;
+    }
+  }
+
+  a {
+    text-decoration-color: lighten($color-dark, 10%);
+    transition: all 0.5s ease !important;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .svg-inline--fa {
+    fill: #fff;
+  }
+
+  p a {
+    color: desaturate($color-dark, 10%);
+    &:hover {
+      color: $color-dark;
+    }
+  }
+
+  #presentation {
+    .description {
+      color: #FFF;
+    }
+    background: #eee;
+    background: linear-gradient(160deg, $color-third, $color-main, $color-second);
+    background-size: 300% 300%;
+  	animation: gradientflow 8s ease-in-out infinite;
+  	-moz-animation: gradientflow 8s ease-in-out infinite;
+  	-webkit-animation: gradientflow 8s ease-in-out infinite;
+  }
+
+
+  @media screen and (min-width: $desktop-width){ // Desktop higher resolutions
+    #main {
+      border-left: 2px solid rgb(83, 83, 83);
+      padding-left: 80px;
+      padding-top: 0;
+      margin-top: 50px;
+    }
+  
+  }
+
+  main.index {
+    border-left: 2px solid #444;
+  }
+
+  main.index article.post {
+    border-bottom: 2px solid #444;
+  }
+  
+}

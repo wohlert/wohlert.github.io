@@ -30,6 +30,7 @@ plugins:
   - jekyll-feed
   - jekyll-scholar
   - jekyll-compass
+  - jekyll-category-pages
 
 sass:
   sass_dir: _sass

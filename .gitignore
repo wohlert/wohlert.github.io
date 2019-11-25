@@ -1,2 +1,8 @@
 .DS_Store
 sass
+.sass-cache
+.vscode
+.bundle
+bin
+vendor
+node_modules
