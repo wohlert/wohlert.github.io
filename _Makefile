@@ -1,5 +1,8 @@
+.PHONY: server compile 
+
 server:
-	bundle exec jekyll serve --livereload 
+	bundle exec jekyll serve --livereload &
+	echo "Server running on http://0.0.0.0:4000/"
 
 compile:
 	bundle

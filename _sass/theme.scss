@@ -116,14 +116,12 @@ nav {
 }
 
 blockquote {
-  background-color: $color-main-u;
-  //border-left: 3px solid lighten($color-main, 30%);
   padding: 10px 50px;
-  color: $color-text;
 }
 
 figcaption {
-  color: darken($color-main-u, 20%);
+  color: darken($color-main-u, 35%);
+  font-size: 0.9rem;
   font-style: italic;
 }
 
@@ -434,10 +432,43 @@ body.post-template {
 }
 
 blockquote {
-  border-left: 2px solid #eee;
+  border-left: 2px dotted #ddd;
 }
 
 a {
   text-decoration: underline;
   text-decoration-style: dotted;
+}
+
+
+.project-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  .project {
+    overflow: initial;
+    width: 100%;
+    padding: 15px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+
+    div:nth-child(1) {
+      cursor: pointer;
+      height: 250px;
+      border-radius: 4px;
+      box-shadow: 1px 1px 5px 1px rgba($color: #000000, $alpha: 0.0);
+      background: linear-gradient(30deg, #574b90, #9e579d, #fc85ae);;
+    }
+    div:nth-child(2) {
+      padding: 20px;
+      span {
+        color: #aaa;
+        margin: 0;
+      }
+      p, h3 {
+        margin: 0;
+      }
+    }
+  }
 }

@@ -46,8 +46,12 @@ MathJax.Hub.Config({
         factory(jQuery);
     }
 }(function ($) {
+    
+
     $.fn.marginotes = function () {
       $('body').append('<div class="margintooltip" style="display: inline;"></div>')
+
+      
 
       this.hover(function (e) {
         var hash = this.hash.split('#')[1]
@@ -69,11 +73,11 @@ MathJax.Hub.Config({
 
         tooltip
           .css({
-            'border-right': 'solid 2px #000',
-            'font-size': '13px',
+            'border-right': 'solid 2px #9E579D',
+            'font-size': '11px',
             'left': article.position().left - width - offset,
             'min-height': parent.height(),
-            'padding-right': '7px',
+            'padding-right': '6px',
             'position': 'absolute',
             'text-align': 'right',
             'top': position.top,
@@ -87,8 +91,8 @@ MathJax.Hub.Config({
           })
       }, function () {
         $('.margintooltip').stop()
-        $('.margintooltip').fadeOut({
-          duration: 4000
+        $('.margintooltip').delay(4000).fadeOut({
+          duration: 500,
         })
       })
     }
