@@ -71,15 +71,13 @@ Getting the optimal gain we recover a Gaussian mixture model
 
 We have seen that convergence in distribution is more easily attainable than pointwise convergence. In fact, noise injection appears to help us for convergence in distribution, as it provide topological covering in the absence of sufficient rate (if our channel is well calibrated). Still, the question remains to what degree we could reconstruct the inputs exactly, in the presence of noise or not.
 
-The trivial results were already proven in the 1950s by Claude Shannon {% cite mackay2003information %} and they will tell you that data can be compressed losslessly down to the entropy of the signal and it can be transmitted with error bounded by the information rate. But Shannon (and lossless compression) is not all there is to be said about compression and error-free transmission. The assumuptions that Shannon and his peers built upon were very general channels and the data passed through are assumed to have certain structure, e.g. i.i.d. samples. Signal regularity has widely been used to write adaptive and domain specific channels, such as for [video coding](https://en.wikipedia.org/wiki/Video_coding_format) and [speech coding](https://en.wikipedia.org/wiki/Speech_coding), and machine learning is the current avenue for adaptive data-based compression.
+The trivial results were already proven in the 1950s by Claude Shannon and they will tell you that data can be compressed losslessly down to the entropy of the signal and it can be transmitted with error bounded by the information rate. But Shannon (and lossless compression) is not all there is to be said about compression and error-free transmission. The assumuptions that Shannon and his peers built upon were very general channels and the data passed through are assumed to have certain structure, e.g. i.i.d. samples. Signal regularity has widely been used to write adaptive and domain specific channels, such as for [video coding](https://en.wikipedia.org/wiki/Video_coding_format) and [speech coding](https://en.wikipedia.org/wiki/Speech_coding), and machine learning is the current avenue for adaptive data-based compression.
 
 As we will see in coming posts, posing learning as a noisy communication channel problem has far-reaching consequences for machine learning. It provides a trivial way to write down a likelihood function, which is given by reconstruction error. Additionally, due to its information theoretic properties, it is amenable to a Bayesian interpretation, for which is becomes simple to pose the problem of posterior inference - though this problem is not always easily solvable.
 
 ---
 
 ## Bibliography
-
-{% bibliography --cited %}
 
 <button type="button" class="collapser">Show proofs</button>
 
