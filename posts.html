@@ -1,14 +1,23 @@
 ---
 layout: default
+title: All posts
 ---
 <div id="presentation" style="background: none;">
   <!-- Content -->
-  <main class="index" role="main">
+  <main role="main">
+    <div class="project-container">
     {% for post in site.posts %}
-      <article itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting" class="post">
-        <header class="meta" style="display:inline;">
-          <h1 class="post-title" itemprop="name headline"><a href="{{ post.url }}"  itemprop="url">{{ post.title }}</a></h1>
+      <div class="project">
+        <div onclick="location.href='{{ post.url }}'"
+        style="
+        background: url({{ post.image }});
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;"></div>
+        <div itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          <h3 itemprop="name headline"><a href="{{ post.url }}" itemprop="url">{{ post.title }}</a></h3>
           <span class="post-data">
+
             <time
             class="timesince date"
             itemprop="datePublished"
@@ -18,9 +27,17 @@ layout: default
             {{ post.date | date: "%B %e, %Y" }}
             </time>
           </span>
+          <br>
+          {% for category in post.categories %}
+            <a href="/category/{{ category }}">#{{ category }}</a>
+          {% endfor %}
+
           <p>{{ post.description }}</p>
-        </header>
-      </article>
+        </div>
+      </div>
+
     {% endfor %}
+    </div>
+
   </main>
 </div>
