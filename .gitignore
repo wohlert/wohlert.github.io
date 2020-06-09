@@ -6,3 +6,6 @@ sass
 bin
 vendor
 node_modules
+.ipynb
+.ipynb_checkpoints
+_site

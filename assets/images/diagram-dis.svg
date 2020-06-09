@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="206.5 109.96949 592.6929 179.0305" width="592.6929" height="179.0305">
+  <defs>
+    <font-face font-family="Didot" font-size="24" panose-1="2 0 5 3 0 0 0 2 0 3" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="436" cap-height="721" ascent="940.9943" descent="-298.99597" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Didot"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Didot" font-size="13" panose-1="2 0 5 3 0 0 0 2 0 3" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="436" cap-height="721" ascent="940.9943" descent="-298.99597" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Didot"/>
+      </font-face-src>
+    </font-face>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="FilledArrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-9 -4 10 8" markerWidth="10" markerHeight="8" color="#a5a5a5">
+      <g>
+        <path d="M -8 0 L 0 3 L 0 -3 Z" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <marker orient="auto" overflow="visible" markerUnits="strokeWidth" id="Arrow_Marker" stroke-linejoin="miter" stroke-miterlimit="10" viewBox="-9 -4 10 8" markerWidth="10" markerHeight="8" color="#a5a5a5">
+      <g>
+        <path d="M -8 0 L 0 3 L 0 -3 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+      </g>
+    </marker>
+    <font-face font-family="Didot" font-size="12" panose-1="2 0 5 3 0 0 0 2 0 3" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="436" cap-height="721" ascent="940.9943" descent="-298.99597" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Didot"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Open Sans" font-size="14" panose-1="2 11 6 6 3 5 4 2 2 4" units-per-em="1000" underline-position="-75.19531" underline-thickness="49.80469" slope="0" x-height="535.15625" cap-height="713.8672" ascent="1068.8477" descent="-292.96875" font-weight="400">
+      <font-face-src>
+        <font-face-name name="OpenSans-Regular"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.8.2 
+    <dc:date>2019-10-13 18:57:26 +0000</dc:date>
+  </metadata>
+  <g id="Canvas_1" fill-opacity="1" stroke-dasharray="none" stroke="none" stroke-opacity="1" fill="none">
+    <title>Canvas 1</title>
+    <g id="Canvas_1: Layer 1">
+      <title>Layer 1</title>
+      <g id="Group_7">
+        <g id="Graphic_9">
+          <circle cx="502.84646" cy="252.20177" r="28.3465018225666" stroke="#9e579d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        </g>
+        <g id="Graphic_8">
+          <text transform="translate(496.3504 235.06128)" fill="#9e579d">
+            <tspan font-family="Didot" font-size="24" font-weight="400" fill="#9e579d" x=".8069474" y="23">x</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Group_16">
+        <g id="Graphic_18">
+          <circle cx="369.09646" cy="252.20177" r="28.3465018225666" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        </g>
+        <g id="Graphic_17">
+          <text transform="translate(345.75 240.6933)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="13" font-weight="400" fill="#a5a5a5" x=".12195653" y="15">rotation</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Group_22">
+        <g id="Graphic_24">
+          <circle cx="636.59646" cy="252.20177" r="28.3465018225665" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        </g>
+        <g id="Graphic_23">
+          <text transform="translate(613.25 240.6933)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="13" font-weight="400" fill="#a5a5a5" x=".7199565" y="15">lighting</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Group_25">
+        <g id="Graphic_27">
+          <circle cx="502.84646" cy="138.81595" r="28.3465018225666" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        </g>
+        <g id="Graphic_26">
+          <text transform="translate(479.5 127.30747)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="13" font-weight="400" fill="#a5a5a5" x=".9669565" y="15">identity</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Line_28">
+        <line x1="541.0929" y1="252.20177" x2="608.25" y2="252.20177" marker-start="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_31">
+        <line x1="464.6" y1="252.20177" x2="397.44293" y2="252.20177" marker-start="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_32">
+        <line x1="502.84646" y1="213.9553" x2="502.84646" y2="167.16242" marker-start="url(#FilledArrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Group_33">
+        <g id="Graphic_35">
+          <path d="M 255.3904 232.15782 C 266.46043 243.2278 266.46043 261.17575 255.3904 272.24572 C 244.32043 283.31575 226.37248 283.31575 215.3025 272.24572 C 204.23248 261.17575 204.23248 243.2278 215.3025 232.15782 C 226.37248 221.0878 244.32043 221.0878 255.3904 232.15782" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+        </g>
+        <g id="Graphic_34">
+          <text transform="translate(212 240.6933)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="13" font-weight="400" fill="#a5a5a5" x="10.866457" y="15">elev.</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Group_36">
+        <g id="Graphic_38">
+          <path d="M 389.1404 118.772 C 400.21043 129.84197 400.21043 147.78992 389.1404 158.8599 C 378.07043 169.92992 360.1225 169.92992 349.0525 158.8599 C 337.98248 147.78992 337.98248 129.84197 349.0525 118.772 C 360.1225 107.70197 378.07043 107.70197 389.1404 118.772" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+        </g>
+        <g id="Graphic_37">
+          <text transform="translate(345.75 127.30747)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="13" font-weight="400" fill="#a5a5a5" x="8.064957" y="15">azim.</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Line_39">
+        <line x1="330.85" y1="252.20177" x2="263.69293" y2="252.20177" marker-start="url(#Arrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+      </g>
+      <g id="Line_41">
+        <line x1="369.09646" y1="213.9553" x2="369.09646" y2="167.16242" marker-start="url(#Arrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+      </g>
+      <g id="Group_54">
+        <g id="Graphic_56">
+          <path d="M 656.6404 118.772 C 667.7104 129.84197 667.7104 147.78992 656.6404 158.8599 C 645.5704 169.92992 627.6225 169.92992 616.5525 158.8599 C 605.4825 147.78992 605.4825 129.84197 616.5525 118.772 C 627.6225 107.70197 645.5704 107.70197 656.6404 118.772" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+        </g>
+        <g id="Graphic_55">
+          <text transform="translate(613.25 127.81947)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="12" font-weight="400" fill="#a5a5a5" x="1.0204565" y="14">distance</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Line_58">
+        <line x1="636.59646" y1="213.9553" x2="636.59646" y2="167.16242" marker-start="url(#Arrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+      </g>
+      <g id="Group_60">
+        <g id="Graphic_62">
+          <path d="M 790.3904 232.15782 C 801.4604 243.2278 801.4604 261.17575 790.3904 272.24572 C 779.3204 283.31575 761.3725 283.31575 750.3025 272.24572 C 739.2325 261.17575 739.2325 243.2278 750.3025 232.15782 C 761.3725 221.0878 779.3204 221.0878 790.3904 232.15782" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+        </g>
+        <g id="Graphic_61">
+          <text transform="translate(747 241.2053)" fill="#a5a5a5">
+            <tspan font-family="Didot" font-size="12" font-weight="400" fill="#a5a5a5" x="1.5784565" y="14">contrast</tspan>
+          </text>
+        </g>
+      </g>
+      <g id="Line_63">
+        <line x1="674.8429" y1="252.20177" x2="742" y2="252.20177" marker-start="url(#Arrow_Marker)" stroke="#a5a5a5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4.0,4.0" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>
