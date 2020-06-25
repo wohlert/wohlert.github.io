@@ -25,7 +25,7 @@
                 </section>
                 <time class="date" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}" title="{{ page.date | date_to_string }}">Published on {{ page.date | date_to_string }}
                 </time>
-                &nbsp; in
+                &nbsp;
                 {% for category in page.categories %}
                   <li>#<a href="{{site.url}}/category/{{category|slugize}}">{{category}}</a></li>
                 {% endfor %}

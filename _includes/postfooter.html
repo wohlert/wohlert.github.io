@@ -7,14 +7,14 @@
 </footer>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+  tex2jax: {inlineMath: [['$$','$$'], ['\\(','\\)']]},
   CommonHTML: { linebreaks: { automatic: true } },
   "HTML-CSS": { linebreaks: { automatic: true } },
           SVG: { linebreaks: { automatic: true } }
 });
 </script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <!--<script src="{{ 'assets/js/highlight.pack.js' | absolute_url }}"></script>
 <script>hljs.initHighlightingOnLoad();</script>-->
 <script>
@@ -46,12 +46,8 @@ MathJax.Hub.Config({
         factory(jQuery);
     }
 }(function ($) {
-    
-
     $.fn.marginotes = function () {
       $('body').append('<div class="margintooltip" style="display: inline;"></div>')
-
-      
 
       this.hover(function (e) {
         var hash = this.hash.split('#')[1]
@@ -98,8 +94,6 @@ MathJax.Hub.Config({
     }
 }));
 $(".footnote").marginotes()
-
-
 $(".collapser").click(function(){
   $(".collapse").toggleClass("show");
 });
