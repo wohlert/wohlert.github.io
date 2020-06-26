@@ -3,5 +3,8 @@
 server:
 	bundle exec jekyll serve --livereload
 
+publish:
+	bundle exec rake --rakefile _Rakefile blog:publish
+
 compile:
 	bundle
