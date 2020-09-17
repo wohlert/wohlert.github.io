@@ -7,8 +7,19 @@
   </h3>
   <nav class="links">
     <ul>
-        <li><a title="Posts" href="{{ 'posts' | relative_url }}">
-        <span style="font-family: monospace; color: black; font-size: 18px; color: #9E579D">∅</span></a>
+        <li>
+          <a title="About" href="{{ 'about' | relative_url }}">
+            <svg class="icon" height="15px" width="15px">
+              <use xlink:href="{{ '/assets/icons/info.svg#icon' | relative_url }}"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a title="Posts" href="{{ 'posts' | relative_url }}">
+          <svg class="icon" height="15px" width="15px">
+            <use xlink:href="{{ '/assets/icons/posts.svg#icon' | relative_url }}"></use>
+          </svg>
+          </a>
         </li>
         <li class="external">
         <a title="Github" href="https://github.com/wohlert" target="_blank">
@@ -30,6 +41,13 @@
             <use xlink:href="{{ '/assets/icons/rss-square.svg#icon' | relative_url }}"></use>
           </svg>
         </a>
+        </li>
+        <li class="external">
+          <a title="Toggle dark / light mode" href="#" onclick="toggle()" id="toggler">
+            <svg class="icon" height="15px" width="15px">
+              <use xlink:href="{{ '/assets/icons/dice.svg#icon' | relative_url }}"></use>
+            </svg>
+          </a>
         </li>
     </ul>
   </nav>

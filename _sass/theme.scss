@@ -30,6 +30,99 @@ $font-code: 'Source Code Pro', monospace;
 $color-text: #566368;
 $color-headline: darken($color-text, 10%);
 
+:root {
+  --color-fg: #fff;
+  --color-bg: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-fg: #282828;
+    --color-bg: #282828;
+  }
+}
+
+body {
+  visibility: hidden;
+}
+
+
+.dark-mode {
+  .mjx-chtml {
+    color: #ddd;
+  }
+
+  img, .post-image, .front-page {
+    filter: invert(85%);
+  }
+
+  a {
+    color: #5dc477;
+    text-decoration-color: #fff;
+  }
+
+  a:hover {
+    color: #4bd16d;
+  }
+
+
+  .links *, #header a, h3 a {
+    color: #eee;
+  }
+
+  .collapser {
+    background-color: #333;
+  }
+
+  .collapser:hover {
+    background-color: #444;
+  }
+
+  #toggler svg, h3 svg {
+    filter: invert(85%);
+  }
+
+  #main, #header, code {
+    background: #282828;
+  }
+
+  #main, #header, hr {
+    border-color: #555;
+  }
+
+  background-color: #282828;
+
+  #hero-img {
+    filter: invert(85%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #ccc;
+  }
+
+  .date {
+    color: #555;
+  }
+
+  code {
+    border: none;
+    font-size: 14px;
+    border-bottom: 1px dashed #bbb;
+    color: #eee;
+    font-family: monospace;
+  }
+
+  color: #aaa;
+}
+/*
+
+.dark-mode {
+  filter: invert(85%);
+
+}
+*/
+
+
 @import 'highlight';
 
 @keyframes gradientflow {
@@ -59,7 +152,7 @@ $color-headline: darken($color-text, 10%);
   background-size: 300% 300%;
 	animation: gradientflow 8s ease-in-out infinite;
 	-moz-animation: gradientflow 8s ease-in-out infinite;
-	-webkit-animation: gradientflow 8s ease-in-out infinite;
+  -webkit-animation: gradientflow 8s ease-in-out infinite;
 }
 
 button:focus {
@@ -418,9 +511,6 @@ figure {
   }
 }
 
-body.post-template {
-  background-color: #fff;
-}
 
 #header {
   border-bottom: 1px solid #eee;
@@ -475,4 +565,36 @@ a {
       }
     }
   }
+}
+
+.a-container {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-grow: 2;
+}
+
+.a-item {
+  flex: 1 0 45%;
+  padding: 0 10px;
+}
+
+.a-img-container {
+  padding: 30px;
+}
+
+.a-img-container > img {
+  padding: 10px;
+  max-width: 100%;
+  max-height: 40px;
+  min-height: 10px;
+}
+
+.mini-img {
+  width: 10px;
+  height: auto;
+  display: inline;
+  border-radius: 0px;
 }

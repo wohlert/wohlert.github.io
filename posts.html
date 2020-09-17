@@ -8,7 +8,7 @@ title: All posts
     <div class="project-container">
     {% for post in site.posts %}
       <div class="project">
-        <div onclick="location.href='{{ post.url }}'"
+        <div class="post-image" onclick="location.href='{{ post.url }}'"
         style="
         background: url({{ post.image }});
         background-size: cover;

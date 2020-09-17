@@ -1,3 +1,7 @@
+body {
+  background-color: #fff;
+}
+
 span.post-data {
   margin: 0 !important;
   color: $color-grey;
@@ -144,7 +148,7 @@ footer {
   padding: 0;
 }
 
-.post-template { background: $color-grey-l; }
+// .post-template { background: $color-grey-l; }
 
 .navigation {
   height: 70px;
