@@ -1,0 +1,30 @@
+{
+  "name": "wohlert.nu",
+  "version": "1.0.0",
+  "description": "blog",
+  "main": "index.html",
+  "dependencies": {
+    "markdown-it": "^8.4.0",
+    "markdown-it-container": "^2.0.0",
+    "markdown-it-footnote": "^3.0.1",
+    "markdown-it-highlightjs": "^3.0.0",
+    "markdown-it-mark": "^2.0.0",
+    "markdown-it-mathjax": "^2.0.0",
+    "pretty": "^2.0.0",
+    "showdown": "^1.7.1"
+  },
+  "devDependencies": {
+    "markdown-it-regexp": "^0.4.0",
+    "xml2js": "^0.4.19"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wohlert/wohlert.nu.git"
+  },
+  "author": "Jesper Wohlert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wohlert/wohlert.nu/issues"
+  },
+  "homepage": "https://github.com/wohlert/wohlert.nu#readme"
+}

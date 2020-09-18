@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content="Jekyll v3.7.3">
+		<title>Signals into the void 1: Noisy channels | uncorrelated</title>
+		<meta name="author" content='Jesper Wohlert'>
+		<meta name="description" content='This is the first post of two on information theory in the context of unsupervised machine learning. The premise of this first post is to introduce some basic concepts and simple examples to get the thinking started.'>
+		<meta name="keywords" content='machine-learning, information-theory, noisy-channels'>
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content='Signals into the void 1: Noisy channels' />
+		<meta property="og:url" content='http://uncorrelated.ml/signal-void-1' />
+		<meta property="og:image" content='http://uncorrelated.ml/assets/images/pack2.jpg' />
+		<meta name="twitter:card" content='summary' />
+		<meta name="twitter:site" content='@whlrt' />
+		<meta name="twitter:title" content='Signals into the void 1: Noisy channels' />
+		<meta name="twitter:description" content='This is the first post of two on information theory in the context of unsupervised machine learning. The premise of this first post is to introduce some basic concepts and simple examples to get the thinking started.' />
+		<meta name="twitter:image" content='http://uncorrelated.ml/assets/images/pack2.jpg' />
+		<link href="/assets/scss/style.css" rel="stylesheet" type="text/css">
+		<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicon/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicon/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicon/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicon/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicon/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicon/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicon/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicon/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+		<link rel="manifest" href="/assets/favicon/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/assets/favicon/ms-icon-144x144.png">
+		<noscript>
+			<style type="text/css">
+				body {
+					visibility: visible;
+				}
+			</style>
+		</noscript>
+		<script src="/assets/js/theme-chooser.js" type="text/javascript"></script>
+		<script>
+			(function() {
+				window.goatcounter = window.goatcounter || {};
+				window.goatcounter.vars = {
+					path: function(p) {
+						return p.replace(/\.html$/, '');
+					},
+					referrer: (window.location.search ? window.location.search.split('=')[1] : null),
+				};
+				window.counter = 'https://wohlert.goatcounter.com/count'
+				var script = document.createElement('script');
+				script.async = 1;
+				script.src = '//gc.zgo.at/count.js';
+				var ins = document.getElementsByTagName('script')[0];
+				ins.parentNode.insertBefore(script, ins)
+			})();
+		</script>
+	</head>
+	<body class="post-template">
+		<div id="header">
+			<span>
+				<svg style="position: absolute; margin-left: -35px;" height="30px" width="30px" viewBox="0 0 45 45">
+					<use xlink:href="/assets/icons/icon.svg#Inverted"></use>
+				</svg>
+				<a href="/posts" style="text-decoration: none;">uncorrelated</a>
+			</span>
+			<nav class="links">
+				<ul>
+					<li>
+						<a title="About" href="/about">
+							<svg class="icon" height="15px" width="15px">
+								<use xlink:href="/assets/icons/info.svg#icon"></use>
+							</svg>
+						</a>
+					</li>
+					<li class="external">
+						<a title="Posts" href="/posts">
+							<svg class="icon" height="15px" width="15px">
+								<use xlink:href="/assets/icons/posts.svg#icon"></use>
+							</svg>
+						</a>
+					</li>
+					<li class="external">
+						<a title="Github" href="https://github.com/wohlert">
+							<svg class="icon" height="15px" width="15px">
+								<use xlink:href="/assets/icons/github.svg#icon"></use>
+							</svg>
+						</a>
+					</li>
+					<li class="external">
+						<a title="Twitter" href="https://twitter.com/whlrt">
+							<svg class="icon twitter" height="15px" width="15px">
+								<use xlink:href="/assets/icons/twitter.svg#icon"></use>
+							</svg>
+						</a>
+					</li>
+					<li class="external">
+						<a title="Atom feed" href="/feed.xml">
+							<svg class="icon rss" height="15px" width="15px">
+								<use xlink:href="/assets/icons/rss-square.svg#icon"></use>
+							</svg>
+						</a>
+					</li>
+					<li>
+						<a title="Toggle dark / light mode" href="#" onclick="toggle()" id="toggler">
+							<svg class="icon" height="15px" width="15px">
+								<use xlink:href="/assets/icons/dice.svg#icon"></use>
+							</svg>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<main id="main" class="post">
+			<article class="content post">
+				<header class="meta">
+					<h1 class="post-title">Signals into the void 1: Noisy channels</h1>
+					<div class="description">
+						<span class="meta-data heading">
+							<section class="byline" style="display: none;">
+								<span itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+									<span itemprop="name" rel="author">Jesper Wohlert</span>
+								</span>
+							</section>
+							<time class="date" itemprop="datePublished" datetime="2020-06-25T01:00:00+03:00" title="25 Jun 2020">Published on 25 Jun 2020</time>
+						</span>
+					</div>
+				</header>
+				<div id="hero-img" style="width: 100%; height: 400px;
+        background: url(/assets/images/pack2.jpg);
+        background-repeat: no-repeat;"></div>
+				<section itemprop="articleBody text" class="post-content">
+					<p><em>This is the first post of two on information theory in the context of unsupervised machine learning.</em>
+						<em>The premise of this first post is to introduce some basic concepts and simple examples to get the thinking started.</em>
+					</p>
+					<hr />
+					<p>Pretend that you are trapped in the now Russian wilderness near Vyborg in the year 1939. You’re hiding in the snow and all you hear around you are faint screams. Naturally, as a last wish, you want to covertly send a message to your comrades, perhaps the instructions of your favourite recipe for poundcake, but your only means of communication is a flashlight. This allows you to send a whole <em>2 bits of information per second</em>. Faced with these limitations, you therefore want to devise a clever plan to encode the message, but how could you go about this? With only 2 bits (on and off) you can send the following symbols.</p>
+					<script type="math/tex; mode=display">\{ 00, 01, 10, 11 \} = \{ A, B, C, s \}</script>
+					<p>In principle, this tiny alphabet will allow you encode any message. Truly, we could redefine the whole alphabet by repetition as <code class="highlighter-rouge">0000 = D, 0001 = E</code> and so forth to make every letter possible, but as our alphabet grows bigger, so does the time send a message. While this scheme allows us to transmit messages with zero <strong>distortion</strong> i.e. perfectly, it is still limited by the same bandwidth constraints, and the Russians are coming quick. So what if you added some randomness? For example set <code class="highlighter-rouge">0000 = A = H</code>, where the same bitstring can represent two different letters. This can give some errors in interpretation, but if the receiver knows the language well enough, they will probably be able to disambiguate it and you can now ‘type’ faster.</p>
+					<p>Intuitively, we must think that we are able to do a tradeoff between the amount of error we incur in interpreting the original message (distortion) and the amount of information we can send per second (rate). In fact there is, and we have plotted the relationship in the case where sequence <script type="math/tex">X_1, \dots, X_n</script> are i.i.d. Gaussians, <script type="math/tex">X_1 \sim \mathcal{N}(0, 1)</script> and message reconstruction is measured in terms of mean-squared error. This is otherwise known as the rate-distortion curve for a channel<sup id="fnref:rate"><a href="#fn:rate" class="footnote">1</a></sup>.</p>
+					<p><img src="assets/images/rate-sigma.svg" alt="Rate-distortion curve for Gaussian channel with fixed variance" /></p>
+					<p>Reading the graph, in order to send the messages with virtually no loss of information, we would need at least 5 bits of information per symbol. If we can accept an error of 25%, meaning on average, every 4th symbol is wrong, we can get away with 1 bit. Note that this curve is specific for the case where the source variable is Gaussian and the channel has the property of being memoryless. We can draw many curves like this for different variances of the Gaussian and what we will find is that the hardness of the problem is ultimately governed by the <strong>entropy</strong> of the source data<sup id="fnref:shannon"><a href="#fn:shannon" class="footnote">2</a></sup> - more random data being harder to compress.</p>
+					<h2 id="the-setup">The setup</h2>
+					<p>To get a better sense of this tradeoff, let us allow ourselves to become more formal.</p>
+					<p>Define a code alphabet as <script type="math/tex">\Sigma = \{ A, B, C \}</script>, with size <script type="math/tex">K = |\Sigma|</script> along with our source random variable <script type="math/tex">X \sim \text{Beta}(2, 4)</script>, which is the “data” that we are interested in. The choice of alphabet and distribution are arbitrary and serve only as example. Given the limited capacity of the alphabet, we have many possible configurations to choose from to segment the data. Limiting ourselves to a metric space viewpoint, we consider three of such configurations,</p>
+					<ol>
+						<li>uniformly over the range of <script type="math/tex">X</script>.</li>
+						<li>uniformly over the range of <script type="math/tex">X</script>, but transformed through the inverse density<sup id="fnref:transform"><a href="#fn:transform" class="footnote">3</a></sup>. Which we call a probability-weighted segmentation of the input space.</li>
+						<li>closest centroid attained from <script type="math/tex">K</script>-means trained on samples from the distribution.</li>
+					</ol>
+					<p>These three options have been shown below, with an arrow indication their midpoints.</p>
+					<p><img src="assets/images/segment-beta.svg" alt="Segmentations" /></p>
+					<p>We can define the encoder as a function that picks out the nearest midpoint/centroid of the corresponding segmentation technique, <script type="math/tex">f_K(x) = {\arg \min_{i}} [\lVert c_i - x \rVert ]</script>. Along with a simple decoder, which picks the actual value of the centroid at this index <script type="math/tex">g(i) = c_i</script>. For convenience, each letter in the alphabet is just its alphabetical index, <script type="math/tex">A = 1, B = 2, ...</script>. This problem in itself is not very interesting, as what we have is just a deterministic approximation of the source variable, which has some quantisation error that is proportional to <script type="math/tex">1/K</script>. The deterministic problem is well studied for both of static and adaptive approached, for which the latter is known as vector quantisation <a class="citation" href="#friedman2001elements">(Friedman, Hastie, &amp; Tibshirani, 2001)</a>.</p>
+					<p>To make the problem more interesting, let us introduce a stochastic variable that is added to the encoding process, so now we have <script type="math/tex">f_K^{p}(x) = {\arg \min_{i}} [\lVert c_i - x \rVert ] + \xi \mod K</script>. Here, <script type="math/tex">\xi \sim \text{Ber}(p)</script> is independent of <script type="math/tex">X</script> and can be considered noise in the channel - so this encoder might randomly shift the code one bit to the right, akin to a <a href="https://en.wikipedia.org/wiki/Caesar_cipher">Caesar cipher</a>. This distribution is actually very simply expressed as a [mixture of two distributions (<a href="#bernoulli-noise-is-equivalent-to-mixture-of-two-distributions">proof</a>). <em>We will analyse this simple construction in depth to understand how noisy channels behave.</em></p>
+					<p>First, we can get the trivial behaviours out the way. If we take this encoder to its natural limit of segmentations by looking at <script type="math/tex">\hat{X} = g(f^p_{\infty}(X))</script>, we end up with a surjection wrt. the source signal. The quantisation error vanishes and <script type="math/tex">\hat{X}</script> converges in distribution to <script type="math/tex">X</script>. However, due to the stochasticity induced by the noise process, we do not have a bijection and we will not have almost-sure convergence. If we instead set <script type="math/tex">p \in \{ 0, 1 \}</script>, we can guarantee almost-sure convergence. This also has the nice side-effect that we can interpret the signal as being on the unit sphere <script type="math/tex">S^1</script>, <script type="math/tex">g(f^{0 \vee 1}_{\infty}(X)) = e^{2 \pi i X}</script>, shown below.</p>
+					<p><img src="assets/images/wrapped-beta.svg" alt="Wrapped beta distribution" /></p>
+					<p>As mentioned, these cases are trivial and generally not practically feasible to consider. Therefore, to investigate further, we pose the following question three questions.</p>
+					<ul>
+						<li>Under which conditions does <script type="math/tex">g(f^{p}_K(X)) \xrightarrow{w} X</script> (convergence in distribution)?</li>
+						<li>Under which conditions (if any) does <script type="math/tex">g(f^{p}_K(X)) \xrightarrow{P} X</script> (convergence in probability)?</li>
+						<li>Which effect does the topology of the centroids have on these types of convergence?</li>
+					</ul>
+					<h2 id="an-experiment">An experiment</h2>
+					<p>We can create a small experiment based on samples drawn from the distribution. We again have the three segmentation strategies highlighted earlier, but we vary the number of segmentations of the code space. We then measure two quantities of the reconstructed data. First, the CDF error, which is a measure of how similar the empirical CDF differs from the ground truth one on average for the whole data. Secondly, the packet error ratio, measuring the proportion of input signals that are perfectly reconstructed up to some error <script type="math/tex">\epsilon</script>.</p>
+					<p>Mathematically, we can define the reconstructed signal as <script type="math/tex">\hat{X} = g(f^{p}_K(X_i))</script> and fix <script type="math/tex">p = 1/4</script>. We call <script type="math/tex">\hat{F}_n</script> the <script type="math/tex">n</script> sample estimated empirical CDF of <script type="math/tex">\hat{X}</script>. Then we define the distribution error <script type="math/tex">E_d</script> and the packet error ratio as <script type="math/tex">E_p</script>.</p>
+					<script type="math/tex; mode=display">E_{\text{d}} = \sup_t \| \hat{F}_n(t) - F(t) \|, \qquad E_{\text{p}}=\frac{1}{n}\sum_{i=1}^n\left(\|\hat{X}_i-X_i\|>\epsilon\right)</script>
+					<p>You will notice that the first error measures the convergence in distribution <script type="math/tex">\hat{X} \xrightarrow{w} X</script> as a function of <script type="math/tex">K</script> and the second is a measure of convergence in probability <script type="math/tex">\hat{X} \xrightarrow{p} X</script>. Intuitively, we expect higher information content (fidelty/rate) when we have more segmentations.</p>
+					<p><img src="assets/images/transmission_errors.svg" alt="Distribution error and packet error" /></p>
+					<p>From the figure on the left, we can see that the error asymptotically approaches <script type="math/tex">0</script> as we increase the number of segmentations. Also notice that the curves presented in both plots bear a similarity to the rate distortion curves discussed earlier, only here they are more complex because our source is different. We can show that for any <script type="math/tex">p \in [0, 1]</script>, the convergence in distribution holds exactly when <script type="math/tex">K \to \infty</script> (<a href="#weak-convergence-of-encoder-decoder">proof</a>). The speed of convergence towards this asymptote varies with the choice of topology. Especially when the number of segmentations are few we see a large gap in performance between the uniform approach compared to the two others. This tells us that the topology is critical in the low fidelity regime.</p>
+					<p>The packet error (computed with <script type="math/tex">\epsilon = 10^{-4}</script>)<sup id="fnref:epsilon"><a href="#fn:epsilon" class="footnote">4</a></sup> similarly shows that the choice of topology is important. But the capacity of the channel, which is here denoted by the number of segmentations, must increase much more before we can reliable send and receive the messages. Even with <script type="math/tex">4096</script> segmentations, or <script type="math/tex">12</script> bits, we still receive the wrong message 20% of the time!</p>
+					<p>How could we improve on this estimate? Well, we can try integrate out the noise by performing clever sampling from the channel. As we know that the source of noise is inherit to the channel, we can probe the noise process by sending multiple instances through the channel. This will hold as long as we know what the ground truth signal is, and only when the noise process is stationary. We can devise an algorithm based on Monte-Carlo sampling below.</p>
+					<div class="language-python highlighter-rouge">
+						<div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+  <span class="c"># Noisy channel encode</span>
+  <span class="o">...</span>
+<span class="k">def</span> <span class="nf">mean_statistic</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+  <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+    <span class="n">acc</span> <span class="o">+=</span> <span class="n">samples</span>
+  <span class="n">acc</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">acc</span>
+<span class="k">def</span> <span class="nf">monte_carlo</span><span class="p">(</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">sample_statistic</span><span class="o">=</span><span class="n">mean_statistic</span><span class="p">):</span>
+  <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">)]</span>
+  <span class="k">return</span> <span class="n">sample_statistic</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span>
+</code></pre>
+						</div>
+					</div>
+					<p><img src="assets/images/monte-carlo-error.svg" alt="Monte Carlo error estimates for packet error ratio" /></p>
+					<p>In the above example, the sample statistic is based on a median and floor filter over a window of 5 observations or random draws. By picking the right type of filter, which in this case we know to be a flooring operation, we can retain a consistent lower bound error rate up to when <script type="math/tex">p=3/4</script>, which is a significant improvement over the raw interpretation from the channel.</p>
+					<p>The intuition here is that convergence in probability is quite a bit more difficult than convergence in distribution. We require orders of magnitude more channel capacity to effectively transmit the message contentwise correctly rather than just distributionally correctly. When the channel is noisy this is further complicated as certain packets are transmitted wrongly. Noise has little effect on the overall distribution, but make pointwise reconstruction difficult. However, we see that we can perform tricks to improve message interpretation if we know something about the noise.</p>
+					<h2 id="side-note-when-can-noise-actually-help">Side note: When can noise actually help?</h2>
+					<p>While we have vilified noise showing that it makes interpreting signals more difficult, it can actually be helpful in some instances. It is especially useful in the cases where we are more interested in the shape or distribution of the data rather than the bitwise reconstruction.</p>
+					<p>If we go back to the previous definitions of encoder/decoder and consider instead a clean encoder, <script type="math/tex">f_K</script> with a noisy decoder <script type="math/tex">g^{\sigma}(i) = c_i + \epsilon</script>, where <script type="math/tex">\epsilon \sim \mathcal{N}(0, \sigma^2)</script> independent of <script type="math/tex">X</script>. We then fix the number of segmentations by setting <script type="math/tex">K = 3</script> and vary the standard deviation of the additive noise and then measure <script type="math/tex">E_{d}</script> as before. What we find is that there is a certain sweet spot of</p>
+					<p><img src="assets/images/gain-reconstruction.svg" alt="Gain" /></p>
+					<p>We obtain an optimal (global) noise value at around <script type="math/tex">\sigma = 0.1</script> and notice that the <script type="math/tex">K</script>-means approach works best. Somehow, the addition of noise at the correct magnitude performs better than no noise at all. Why does this seem to work?</p>
+					<p>Because we are measuring the discrepancy in distribution terms, rather than in a pointwise manner, the noise helps to fill the “holes” that are left behind by not having a high enough fidelity (<script type="math/tex">K</script>). What we are actually doing here is modelling the source variable as a Gaussian mixture model with three components and shared variance, but rather than using the common EM-approach of finding centers, we have chosen them more arbitrarily. What we do see is that the choice of topology is again important to get a correct coverage of the code-space. These centers must be distributed non-overlappingly according to some <em>maximum likelihood</em> law, rather than an a-priori maximally covering law.</p>
+					<blockquote>
+						<p>If our topology is a minimally covering set and the noise process is locally applied to clusters it allows us to build bridges.</p>
+					</blockquote>
+					<p>The UMAP <a class="citation" href="#mcinnes2018umap">(McInnes, Healy, &amp; Melville, 2018)</a> method is a beautiful application of this principle, in which simplical complexes are used to construct this covering set.</p>
+					<p><img src="assets/images/noisy-surface.svg" alt="Gaussian noise on surface points" /></p>
+					<h2 id="when-can-we-perfectly-capture-the-inputs">When can we perfectly capture the inputs?</h2>
+					<p>We have seen that convergence in distribution is more easily attainable than pointwise convergence. In fact, noise injection appears to help us for convergence in distribution, as it provide topological covering in the absence of sufficient rate (if our channel is well calibrated). Still, the question remains to what degree we could reconstruct the inputs exactly, in the presence of noise or not.</p>
+					<p>The trivial results were already proven in the 1950s by Claude Shannon <a class="citation" href="#mackay2003information">(MacKay, 2003)</a> and they will tell you that data can be compressed losslessly down to the entropy of the signal and it can be transmitted with error bounded by the information rate. But Shannon (and lossless compression) is not all there is to be said about compression and error-free transmission. The assumuptions that Shannon and his peers built upon were very general channels and the data passed through are assumed to have certain structure, e.g. i.i.d. samples. Signal regularity has widely been used to write adaptive and domain specific channels, such as for <a href="https://en.wikipedia.org/wiki/Video_coding_format">video coding</a> and <a href="https://en.wikipedia.org/wiki/Speech_coding">speech coding</a>, and machine learning is the current avenue for adaptive data-based compression.</p>
+					<p>As we will see in next post, posing learning as a noisy communication channel problem gives us the ability do well-posed<sup id="fnref:well-posed"><a href="#fn:well-posed" class="footnote">5</a></sup> maximum (approximate) likelihood estimation in an unsupervised way. It provides a trivial way to write down a likelihood function, which is given by reconstruction error. Additionally, due to its information theoretic properties, it is amenable to a Bayesian interpretation, for which is becomes simple to pose the problem of posterior inference - though this problem is not always easily solvable.</p>
+					<hr />
+					<h2 id="bibliography">Bibliography</h2>
+					<ol class="bibliography">
+						<li><span id="friedman2001elements">Friedman, J., Hastie, T., &amp; Tibshirani, R. (2001). <i>The elements of statistical learning</i> (Vol. 1). Springer series in statistics New York.</span></li>
+						<li><span id="mcinnes2018umap">McInnes, L., Healy, J., &amp; Melville, J. (2018). Umap: Uniform manifold approximation and projection for dimension reduction. <i>ArXiv Preprint ArXiv:1802.03426</i>.</span></li>
+						<li><span id="mackay2003information">MacKay, D. J. C. (2003). Information theory, inference, and learning algorithms. Cambridge Univ Pr.</span></li>
+					</ol>
+					<p><button type="button" class="collapser">Show proofs</button></p>
+					<div class="collapse">
+						<h3 id="bernoulli-noise-is-equivalent-to-mixture-of-two-distributions">Bernoulli noise is equivalent to mixture of two distributions</h3>
+						<p>Let <script type="math/tex">X \sim \text{Cat} \left( \{ p_k \}_{k=1}^K \right )</script> be a distribution of a set of <script type="math/tex">K</script> categories with probability of class <script type="math/tex">k</script> being <script type="math/tex">p_k \geq 0</script>, and let <script type="math/tex">Y \sim \text{Ber}(p)</script>. Define their sum as <script type="math/tex">Z = X + Y</script>. The probability of <script type="math/tex">Z</script> is given by.</p>
+						<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\mathbb{P}(Z = z) &= \mathbb{P}(X + Y = z) = \mathbb{P}(X = z - Y) = \sum_{i = 1}^K \mathbb{P}(X = z - k) \mathbb{P}(Y = k)\\
+&= \mathbb{P}(X = z - 1) p + \mathbb{P}(X = z) (1 - p)
+\end{aligned} %]]></script>
+						<p>Now consider the same problem, but <script type="math/tex">Z</script> is instead wrapped to the image of <script type="math/tex">X</script>, such that <script type="math/tex">Z' = X + Y \mod K</script>.</p>
+						<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\mathbb{P}(Z' = z) &= \sum_{k=1}^K [z = k](p_kp + p_{(k+1 \mod  K)}(1 - p))
+\end{aligned} %]]></script>
+						<p>This is equivalent to <script type="math/tex">Z' = p\text{Cat}( \{ p_{k+1 \mod K} \} ) + (1 - p) \text{Cat}( \{ p_k \} )</script>, a mixture of <script type="math/tex">X</script> with probability <script type="math/tex">1 - p</script> and a shifted version of <script type="math/tex">X</script> with probability <script type="math/tex">p</script>. So adding Bernoulli noise to a categorical variable leads to a convex mixture of categorical distributions.</p>
+						<h3 id="weak-convergence-of-encoder-decoder">Weak convergence of encoder-decoder</h3>
+						<p>Let <script type="math/tex">h</script> be a function which acts pointwise on <script type="math/tex">X</script>, then the expected reconstruction under <script type="math/tex">h</script> is given by.</p>
+						<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\lim_{N \to \infty} \mathbb{E}[h(g(f(X)))] &= \lim_{N \to \infty} \int_{-\infty}^{\infty} p_X(x) h(c_{\arg \min_{n} ||x - c_n||}) \ dx = \lim_{N \to \infty} \sum_{n=1}^N \int_{I_n} p_X(x) h(c_n) \ dx
+\end{aligned} %]]></script>
+						<p>Where <script type="math/tex">I_n = \left [ c_{n-1} + \frac{c_{n} - c_{n-1}}{2}, c_{n} + \frac{c_{n+1} - c_{n}}{2} \right ]</script> are segmentations of the real line based on the midpoint of subsequent cluster centers. By seeing that as <script type="math/tex">N \to \infty</script>, <script type="math/tex">\|I_n\| \to 0</script> the statement above converges to a Riemannian integral.</p>
+						<script type="math/tex; mode=display">\begin{aligned}
+\lim_{N \to \infty} \sum_{n=1}^N \int_{I_n} p_X(x) h(c_n) \ dx = \int p_X(x) h(x) \ dx = \mathbb{E}[h(X)]
+\end{aligned}</script>
+						<p>Which shows that <script type="math/tex">g(f(X)) \xrightarrow{w} X</script> as <script type="math/tex">N \to \infty</script>. By the argument that <script type="math/tex">\| I_n \| \to 0</script> with the noise process <script type="math/tex">\psi</script> defined earlier, <script type="math/tex">g(\psi(f(X))) \xrightarrow{w} X</script> similarly. Note that this proof only holds due to the facts that <script type="math/tex">\mathbb{R}</script> has a total order and <script type="math/tex">h</script> is Riemann integrable.</p>
+					</div>
+					<h3 id="footnotes">Footnotes</h3>
+					<div class="footnotes">
+						<ol>
+							<li id="fn:rate">
+								<p>For an introduction to this concept, the <a href="https://en.wikipedia.org/wiki/Rate%E2%80%93distortion_theory#Memoryless_(independent)_Gaussian_source_with_squared-error_distortion">wikipedia article</a> is quite good. <a href="#fnref:rate" class="reversefootnote">&#8617;</a></p>
+							</li>
+							<li id="fn:shannon">
+								<p>Shannon’s source coding theorem tells us that a sequence of <script type="math/tex">N</script> i.i.d. random variables with entropy <script type="math/tex">H(X)</script> cannot be perfectly compressed to less than <script type="math/tex">NH(X)</script> bits. <a href="#fnref:shannon" class="reversefootnote">&#8617;</a></p>
+							</li>
+							<li id="fn:transform">
+								<p>Consider the CDF of a distribution as <script type="math/tex">p = F(x; \theta)</script> with inverse <script type="math/tex">x = F^{-1}(p; \theta)</script> its quantile function. An index set <script type="math/tex">I \subset [0, 1]</script> can then be pushed through the distribution <script type="math/tex">[0, 1] \supset I_F = F^{-1}(I; \theta)</script> <a href="#fnref:transform" class="reversefootnote">&#8617;</a></p>
+							</li>
+							<li id="fn:epsilon">
+								<p>This plot is actual better conveyed as three-dimensional, where the choice of epsilon varies over this new direction. Here we have picked an arbitrary threshold to simplify the plots. <a href="#fnref:epsilon" class="reversefootnote">&#8617;</a></p>
+							</li>
+							<li id="fn:well-posed">
+								<p>Actually, the degree to which this is actually all that well-posed is one of the points of contention in the following post. <a href="#fnref:well-posed" class="reversefootnote">&#8617;</a></p>
+							</li>
+						</ol>
+					</div>
+				</section>
+			</article>
+		</main>
+		<footer>
+			<section class="colophon">
+				<section class="copyright">
+					Copyright &copy; <span itemprop="copyrightHolder">Uncorrelated</span>. <span rel="license">All Rights Reserved</span>.
+				</section>
+			</section>
+		</footer>
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$$','$$'], ['\\(','\\)']]},
+  CommonHTML: { linebreaks: { automatic: true } },
+  "HTML-CSS": { linebreaks: { automatic: true } },
+          SVG: { linebreaks: { automatic: true } }
+});
+</script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+		<script type="text/javascript" src="/assets/js/margin-notes.js"></script>
+		<script src="http://uncorrelated.ml/assets/js/highlight.pack.js"></script>
+		<script>
+			hljs.initHighlightingOnLoad();
+		</script>
+	</body>
+</html>

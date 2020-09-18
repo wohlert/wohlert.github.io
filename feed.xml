@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Uncorrelated</title>
+    <description>Blog about learning and information; human and machine. Posts are released once every few months featuring in-depth coverage of problems and ideas within these topics.</description>
+    <link>http://uncorrelated.ml</link>
+    <atom:link href="http://uncorrelated.ml/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>The inverse kinematics trick</title>
+        <description>&lt;p&gt;The animation below shows a simulated trajectory of the gripper of a robot arm with 6 degrees of freedom. Like a human arm, a robotic arm has a number of joints that can move in certain prescribed ways in order to grasp objects within reach. Just like how you can’t lick your own elbow, there are certain positions a robot arm cannot come into, simply because of limitations in its joints. However, the motions that it can take depend solely on the &lt;em&gt;joint configuration&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/kinematics-anim.gif&quot; alt=&quot;Robot arm trajectory&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You may think of a single configuration as a point in a configuration space which is a product of &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; joint spaces &lt;script type=&quot;math/tex&quot;&gt;Q = \Pi_{i=1}^{n} Q_i&lt;/script&gt;, with some continuous function mapping the configuration space to 3d-space, &lt;script type=&quot;math/tex&quot;&gt;f: Q \to \mathbb{R}^3&lt;/script&gt;, where the hand is. &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; tells you if you have have a valid configuration of the joints &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt;, then the arm is in some position in 3D space &lt;script type=&quot;math/tex&quot;&gt;x = f(q)&lt;/script&gt;. This is also known as the forward kinematics model of the particular system&lt;sup id=&quot;fnref:alternate&quot;&gt;&lt;a href=&quot;#fn:alternate&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. The main problem in (robot) kinematics is the &lt;em&gt;inverse&lt;/em&gt; kinematics &lt;script type=&quot;math/tex&quot;&gt;q = f^{-1}(x)&lt;/script&gt;, in which we try to infer the sequence of joint configurations that will lead us to a particular position in space given that we are at some base position.&lt;/p&gt;
+
+&lt;p&gt;The problem seems straight forward, and it in fact it is as many robots have closed-form inverse kinematic models. But for some problems the function &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; can act in a non-linear fashion that makes it difficult to invert exactly for all points in 3d space. Therefore, let us ask a different question. If we want to perturb the arm slightly from its current position to a neighbouring position &lt;script type=&quot;math/tex&quot;&gt;x + \Delta x&lt;/script&gt;, how should we then go about changing the joints &lt;script type=&quot;math/tex&quot;&gt;q = f^{-1}(x)&lt;/script&gt; that correspond to the origin position? We can consider the differential (in one dimension),&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;d x = f'(q) dq&lt;/script&gt;
+
+&lt;p&gt;Which describes a best linearisation of &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; around &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt;, which you can consider to be a first-order Taylor expansion only being valid close to &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt;. Since this equation is now linear, it and its multivariate counterpart are (pseudo-)invertible and we can write out the change in joints &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; wrt. a small change in &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; in the multivariable case as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;(q + \Delta q) = J_{f}(x)^{\dagger} (x + \Delta x)&lt;/script&gt;
+
+&lt;p&gt;Here &lt;script type=&quot;math/tex&quot;&gt;( \cdot )^{\dagger}&lt;/script&gt; represents the pseudo-inverse as &lt;script type=&quot;math/tex&quot;&gt;J_{f}&lt;/script&gt; is not necessarily square. But what we have essentially done here is &lt;em&gt;model inversion&lt;/em&gt; using 1700s techniques. With modern techniques such as singular value decomposition, the pseudo-inverse can be computed very easily.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;J_{f}(q)^{\dagger} = (U \Sigma V)^{\dagger} = V \Sigma^{-1} U&lt;/script&gt;
+
+&lt;p&gt;This decomposition tells us almost everything there is to know about the system at this specific point. For example &lt;script type=&quot;math/tex&quot;&gt;\min(\sigma)/\max(\sigma)&lt;/script&gt; will give you the sensitivity in 3-space wrt. the direction of change in joints. Similarly, the vector corresponding to the smallest singular value will give you the direction of least movement &lt;a class=&quot;citation&quot; href=&quot;#murray1994mathematical&quot;&gt;(Murray, Li, Sastry, &amp;amp; Sastry, 1994)&lt;/a&gt;. Below is an example of an SVD of the Jacobian matrix of the system shown in the previous animation, this system happens to be trivially invertible and its inverse is exactly its transpose &lt;script type=&quot;math/tex&quot;&gt;J_{f}(q)^{\dagger} = J_{f}(q)^T&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/svd.svg&quot; alt=&quot;SVD of the Jacobian matrix&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Curiously, though not all systems provide an orthogonal Jacobian, we can still use the transpose as a heuristic as a faster, but more imprecise inversion method. If this approximation is close enough, we can determine a trajectory to a target point &lt;script type=&quot;math/tex&quot;&gt;x^{\ast}&lt;/script&gt; by using gradient descent on the relation.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q_{t+1} := q_t - \eta J_{f}^{T}(q_t)(x^{\ast} - f(q_t))&lt;/script&gt;
+
+&lt;p&gt;Which for small step size &lt;script type=&quot;math/tex&quot;&gt;\eta&lt;/script&gt; leads to a trajectory &lt;script type=&quot;math/tex&quot;&gt;\{ q_0, \dots, q_T \}&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;x^{\ast} = f(q_T)&lt;/script&gt;. This sounds very nice and easy, but remember that we are attempting to find a solution to an inverse problem, so there might be no solutions or many similar solutions. Additionally, we are likely to have numerical blowups if we use such a naive technique&lt;sup id=&quot;fnref:notes&quot;&gt;&lt;a href=&quot;#fn:notes&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;use-in-machine-learning-literature&quot;&gt;Use in machine learning literature&lt;/h2&gt;
+
+&lt;p&gt;In the Gradient Origin Network paper &lt;a class=&quot;citation&quot; href=&quot;#bondtaylor2020gradient&quot;&gt;(Bond-Taylor &amp;amp; Willcocks, 2020)&lt;/a&gt;, the authors are working with differentiable function approximators (neural networks) and want to implicitly learn the latent space induced by a forward model. In the paper, this is contrasted with the use of a (variational) autoencoder, which amortises the assignment of points in the latent space using another neural network. The authors forego this by using the inverse Jacobian technique.&lt;/p&gt;
+
+&lt;p&gt;Analogous to the configuration space, we start out with a point in the latent space &lt;script type=&quot;math/tex&quot;&gt;z_0&lt;/script&gt;, which is then run through the forward model in order to compute the gradient of the distance to the target &lt;script type=&quot;math/tex&quot;&gt;(x - f(z_0))^2&lt;/script&gt; wrt. &lt;script type=&quot;math/tex&quot;&gt;z_0&lt;/script&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tilde{\nabla} = \nabla_{z_0} (x - f(z_0))^2 = -2 J_{f}(z_0)^{T} (x - f(z_0)) \approx (z - z_0)&lt;/script&gt;
+
+&lt;p&gt;Then the negative gradient is run through the network again such that it is possible to directly perform joint optimisation of &lt;script type=&quot;math/tex&quot;&gt;z_0&lt;/script&gt; and the parameters of the network &lt;script type=&quot;math/tex&quot;&gt;(\theta)&lt;/script&gt;. This is exactly the transpose Jacobian method with a single step of size &lt;script type=&quot;math/tex&quot;&gt;\eta = 2&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;The question is then, is there a best choice for &lt;script type=&quot;math/tex&quot;&gt;z_0&lt;/script&gt;? As we insert the negative gradient back into the function &lt;script type=&quot;math/tex&quot;&gt;f(-\tilde{\nabla})&lt;/script&gt;, there is a certain value that we want it to take, which is zero, because that means that we are at a gradient minimum. This follows directly from the reuse of &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt;. This also hints at the name “gradient origin”. At the time of writing, the connection between the inverse Jacobian method is not made in the paper, but the connection seems to be clear.&lt;/p&gt;
+
+&lt;p&gt;Despite the instability of this “trick”, it could be interesting to explore in the context of other ML domains, such as model-based reinforcement learning, as the forward dynamics model is often given as a neural network that is non-invertible. Cheap (and correct) inversion of these models will tell you more about their learned representations.&lt;/p&gt;
+
+&lt;h2 id=&quot;bibliography&quot;&gt;Bibliography&lt;/h2&gt;
+
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;span id=&quot;murray1994mathematical&quot;&gt;Murray, R. M., Li, Z., Sastry, S. S., &amp;amp; Sastry, S. S. (1994). &lt;i&gt;A mathematical introduction to robotic manipulation&lt;/i&gt;. CRC press.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;bondtaylor2020gradient&quot;&gt;Bond-Taylor, S., &amp;amp; Willcocks, C. G. (2020). Gradient Origin Networks. &lt;i&gt;ArXiv Preprint ArXiv:2007.02798&lt;/i&gt;.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;h3 id=&quot;footnotes&quot;&gt;Footnotes&lt;/h3&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:alternate&quot;&gt;
+      &lt;p&gt;In machine learning this might also be called the dynamics model or just “forward” model. &lt;a href=&quot;#fnref:alternate&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:notes&quot;&gt;
+      &lt;p&gt;The notes by &lt;a href=&quot;https://homes.cs.washington.edu/~todorov/courses/cseP590/06_JacobianMethods.pdf&quot;&gt;Stefan Schaal&lt;/a&gt; provide excellent explanations about the development and improvement of these methods. &lt;a href=&quot;#fnref:notes&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 07 Aug 2020 01:00:00 +0300</pubDate>
+        <link>http://uncorrelated.ml//kinematics</link>
+        <guid isPermaLink="true">http://uncorrelated.ml//kinematics</guid>
+      </item>
+    
+      <item>
+        <title>Signals into the void 1: Noisy channels</title>
+        <description>&lt;p&gt;&lt;em&gt;This is the first post of two on information theory in the context of unsupervised machine learning.&lt;/em&gt;
+&lt;em&gt;The premise of this first post is to introduce some basic concepts and simple examples to get the thinking started.&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Pretend that you are trapped in the now Russian wilderness near Vyborg in the year 1939. You’re hiding in the snow and all you hear around you are faint screams. Naturally, as a last wish, you want to covertly send a message to your comrades, perhaps the instructions of your favourite recipe for poundcake, but your only means of communication is a flashlight. This allows you to send a whole &lt;em&gt;2 bits of information per second&lt;/em&gt;. Faced with these limitations, you therefore want to devise a clever plan to encode the message, but how could you go about this? With only 2 bits (on and off) you can send the following symbols.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\{ 00, 01, 10, 11 \} = \{ A, B, C, s \}&lt;/script&gt;
+
+&lt;p&gt;In principle, this tiny alphabet will allow you encode any message. Truly, we could redefine the whole alphabet by repetition as &lt;code class=&quot;highlighter-rouge&quot;&gt;0000 = D, 0001 = E&lt;/code&gt; and so forth to make every letter possible, but as our alphabet grows bigger, so does the time send a message. While this scheme allows us to transmit messages with zero &lt;strong&gt;distortion&lt;/strong&gt; i.e. perfectly, it is still limited by the same bandwidth constraints, and the Russians are coming quick. So what if you added some randomness? For example set &lt;code class=&quot;highlighter-rouge&quot;&gt;0000 = A = H&lt;/code&gt;, where the same bitstring can represent two different letters. This can give some errors in interpretation, but if the receiver knows the language well enough, they will probably be able to disambiguate it and you can now ‘type’ faster.&lt;/p&gt;
+
+&lt;p&gt;Intuitively, we must think that we are able to do a tradeoff between the amount of error we incur in interpreting the original message (distortion) and the amount of information we can send per second (rate). In fact there is, and we have plotted the relationship in the case where sequence &lt;script type=&quot;math/tex&quot;&gt;X_1, \dots, X_n&lt;/script&gt; are i.i.d. Gaussians, &lt;script type=&quot;math/tex&quot;&gt;X_1 \sim \mathcal{N}(0, 1)&lt;/script&gt; and message reconstruction is measured in terms of mean-squared error. This is otherwise known as the rate-distortion curve for a channel&lt;sup id=&quot;fnref:rate&quot;&gt;&lt;a href=&quot;#fn:rate&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/rate-sigma.svg&quot; alt=&quot;Rate-distortion curve for Gaussian channel with fixed variance&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Reading the graph, in order to send the messages with virtually no loss of information, we would need at least 5 bits of information per symbol. If we can accept an error of 25%, meaning on average, every 4th symbol is wrong, we can get away with 1 bit. Note that this curve is specific for the case where the source variable is Gaussian and the channel has the property of being memoryless. We can draw many curves like this for different variances of the Gaussian and what we will find is that the hardness of the problem is ultimately governed by the &lt;strong&gt;entropy&lt;/strong&gt; of the source data&lt;sup id=&quot;fnref:shannon&quot;&gt;&lt;a href=&quot;#fn:shannon&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; - more random data being harder to compress.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-setup&quot;&gt;The setup&lt;/h2&gt;
+
+&lt;p&gt;To get a better sense of this tradeoff, let us allow ourselves to become more formal.&lt;/p&gt;
+
+&lt;p&gt;Define a code alphabet as &lt;script type=&quot;math/tex&quot;&gt;\Sigma = \{ A, B, C \}&lt;/script&gt;, with size &lt;script type=&quot;math/tex&quot;&gt;K = |\Sigma|&lt;/script&gt; along with our source random variable &lt;script type=&quot;math/tex&quot;&gt;X \sim \text{Beta}(2, 4)&lt;/script&gt;, which is the “data” that we are interested in. The choice of alphabet and distribution are arbitrary and serve only as example. Given the limited capacity of the alphabet, we have many possible configurations to choose from to segment the data. Limiting ourselves to a metric space viewpoint, we consider three of such configurations,&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;uniformly over the range of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;uniformly over the range of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;, but transformed through the inverse density&lt;sup id=&quot;fnref:transform&quot;&gt;&lt;a href=&quot;#fn:transform&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;. Which we call a probability-weighted segmentation of the input space.&lt;/li&gt;
+  &lt;li&gt;closest centroid attained from &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;-means trained on samples from the distribution.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;These three options have been shown below, with an arrow indication their midpoints.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/segment-beta.svg&quot; alt=&quot;Segmentations&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can define the encoder as a function that picks out the nearest midpoint/centroid of the corresponding segmentation technique, &lt;script type=&quot;math/tex&quot;&gt;f_K(x) = {\arg \min_{i}} [\lVert c_i - x \rVert ]&lt;/script&gt;. Along with a simple decoder, which picks the actual value of the centroid at this index &lt;script type=&quot;math/tex&quot;&gt;g(i) = c_i&lt;/script&gt;. For convenience, each letter in the alphabet is just its alphabetical index, &lt;script type=&quot;math/tex&quot;&gt;A = 1, B = 2, ...&lt;/script&gt;. This problem in itself is not very interesting, as what we have is just a deterministic approximation of the source variable, which has some quantisation error that is proportional to &lt;script type=&quot;math/tex&quot;&gt;1/K&lt;/script&gt;. The deterministic problem is well studied for both of static  and adaptive approached, for which the latter is known as vector quantisation &lt;a class=&quot;citation&quot; href=&quot;#friedman2001elements&quot;&gt;(Friedman, Hastie, &amp;amp; Tibshirani, 2001)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To make the problem more interesting, let us introduce a stochastic variable that is added to the encoding process, so now we have &lt;script type=&quot;math/tex&quot;&gt;f_K^{p}(x) = {\arg \min_{i}} [\lVert c_i - x \rVert ] + \xi \mod K&lt;/script&gt;. Here, &lt;script type=&quot;math/tex&quot;&gt;\xi \sim \text{Ber}(p)&lt;/script&gt; is independent of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and can be considered noise in the channel - so this encoder might randomly shift the code one bit to the right, akin to a &lt;a href=&quot;https://en.wikipedia.org/wiki/Caesar_cipher&quot;&gt;Caesar cipher&lt;/a&gt;. This distribution is actually very simply expressed as a [mixture of two distributions (&lt;a href=&quot;#bernoulli-noise-is-equivalent-to-mixture-of-two-distributions&quot;&gt;proof&lt;/a&gt;). &lt;em&gt;We will analyse this simple construction in depth to understand how noisy channels behave.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;First, we can get the trivial behaviours out the way. If we take this encoder to its natural limit of segmentations by looking at &lt;script type=&quot;math/tex&quot;&gt;\hat{X} = g(f^p_{\infty}(X))&lt;/script&gt;, we end up with a surjection wrt. the source signal. The quantisation error vanishes and &lt;script type=&quot;math/tex&quot;&gt;\hat{X}&lt;/script&gt; converges in distribution to &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;. However, due to the stochasticity induced by the noise process, we do not have a bijection and we will not have almost-sure convergence. If we instead set &lt;script type=&quot;math/tex&quot;&gt;p \in \{ 0, 1 \}&lt;/script&gt;, we can guarantee almost-sure convergence. This also has the nice side-effect that we can interpret the signal as being on the unit sphere &lt;script type=&quot;math/tex&quot;&gt;S^1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;g(f^{0 \vee 1}_{\infty}(X)) = e^{2 \pi i X}&lt;/script&gt;, shown below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/wrapped-beta.svg&quot; alt=&quot;Wrapped beta distribution&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As mentioned, these cases are trivial and generally not practically feasible to consider. Therefore, to investigate further, we pose the following question three questions.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Under which conditions does &lt;script type=&quot;math/tex&quot;&gt;g(f^{p}_K(X)) \xrightarrow{w} X&lt;/script&gt; (convergence in distribution)?&lt;/li&gt;
+  &lt;li&gt;Under which conditions (if any) does &lt;script type=&quot;math/tex&quot;&gt;g(f^{p}_K(X)) \xrightarrow{P} X&lt;/script&gt; (convergence in probability)?&lt;/li&gt;
+  &lt;li&gt;Which effect does the topology of the centroids have on these types of convergence?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;an-experiment&quot;&gt;An experiment&lt;/h2&gt;
+
+&lt;p&gt;We can create a small experiment based on samples drawn from the distribution. We again have the three segmentation strategies highlighted earlier, but we vary the number of segmentations of the code space. We then measure two quantities of the reconstructed data. First, the CDF error, which is a measure of how similar the empirical CDF differs from the ground truth one on average for the whole data. Secondly, the packet error ratio, measuring the proportion of input signals that are perfectly reconstructed up to some error &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Mathematically, we can define the reconstructed signal as &lt;script type=&quot;math/tex&quot;&gt;\hat{X} = g(f^{p}_K(X_i))&lt;/script&gt; and fix &lt;script type=&quot;math/tex&quot;&gt;p = 1/4&lt;/script&gt;. We call &lt;script type=&quot;math/tex&quot;&gt;\hat{F}_n&lt;/script&gt; the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; sample estimated empirical CDF of &lt;script type=&quot;math/tex&quot;&gt;\hat{X}&lt;/script&gt;. Then we define the distribution error &lt;script type=&quot;math/tex&quot;&gt;E_d&lt;/script&gt; and the packet error ratio as &lt;script type=&quot;math/tex&quot;&gt;E_p&lt;/script&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;E_{\text{d}} = \sup_t \| \hat{F}_n(t) - F(t) \|, \qquad E_{\text{p}}=\frac{1}{n}\sum_{i=1}^n\left(\|\hat{X}_i-X_i\|&gt;\epsilon\right)&lt;/script&gt;
+
+&lt;p&gt;You will notice that the first error measures the convergence in distribution &lt;script type=&quot;math/tex&quot;&gt;\hat{X} \xrightarrow{w} X&lt;/script&gt; as a function of &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt; and the second is a measure of convergence in probability &lt;script type=&quot;math/tex&quot;&gt;\hat{X} \xrightarrow{p} X&lt;/script&gt;. Intuitively, we expect higher information content (fidelty/rate) when we have more segmentations.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/transmission_errors.svg&quot; alt=&quot;Distribution error and packet error&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;From the figure on the left, we can see that the error asymptotically approaches &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; as we increase the number of segmentations. Also notice that the curves presented in both plots bear a similarity to the rate distortion curves discussed earlier, only here they are more complex because our source is different. We can show that for any &lt;script type=&quot;math/tex&quot;&gt;p \in [0, 1]&lt;/script&gt;, the convergence in distribution holds exactly when &lt;script type=&quot;math/tex&quot;&gt;K \to \infty&lt;/script&gt; (&lt;a href=&quot;#weak-convergence-of-encoder-decoder&quot;&gt;proof&lt;/a&gt;). The speed of convergence towards this asymptote varies with the choice of topology. Especially when the number of segmentations are few we see a large gap in performance between the uniform approach compared to the two others. This tells us that the topology is critical in the low fidelity regime.&lt;/p&gt;
+
+&lt;p&gt;The packet error (computed with &lt;script type=&quot;math/tex&quot;&gt;\epsilon = 10^{-4}&lt;/script&gt;)&lt;sup id=&quot;fnref:epsilon&quot;&gt;&lt;a href=&quot;#fn:epsilon&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; similarly shows that the choice of topology is important. But the capacity of the channel, which is here denoted by the number of segmentations, must increase much more before we can reliable send and receive the messages. Even with &lt;script type=&quot;math/tex&quot;&gt;4096&lt;/script&gt; segmentations, or &lt;script type=&quot;math/tex&quot;&gt;12&lt;/script&gt; bits, we still receive the wrong message 20% of the time!&lt;/p&gt;
+
+&lt;p&gt;How could we improve on this estimate? Well, we can try integrate out the noise by performing clever sampling from the channel. As we know that the source of noise is inherit to the channel, we can probe the noise process by sending multiple instances through the channel. This will hold as long as we know what the ground truth signal is, and only when the noise process is stationary. We can devise an algorithm based on Monte-Carlo sampling below.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Noisy channel encode&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mean_statistic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;acc&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;monte_carlo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample_statistic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mean_statistic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;samples&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_samples&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample_statistic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;responses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/monte-carlo-error.svg&quot; alt=&quot;Monte Carlo error estimates for packet error ratio&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the above example, the sample statistic is based on a median and floor filter over a window of 5 observations or random draws. By picking the right type of filter, which in this case we know to be a flooring operation, we can retain a consistent lower bound error rate up to when &lt;script type=&quot;math/tex&quot;&gt;p=3/4&lt;/script&gt;, which is a significant improvement over the raw interpretation from the channel.&lt;/p&gt;
+
+&lt;p&gt;The intuition here is that convergence in probability is quite a bit more difficult than convergence in distribution. We require orders of magnitude more channel capacity to effectively transmit the message contentwise correctly rather than just distributionally correctly. When the channel is noisy this is further complicated as certain packets are transmitted wrongly. Noise has little effect on the overall distribution, but make pointwise reconstruction difficult. However, we see that we can perform tricks to improve message interpretation if we know something about the noise.&lt;/p&gt;
+
+&lt;h2 id=&quot;side-note-when-can-noise-actually-help&quot;&gt;Side note: When can noise actually help?&lt;/h2&gt;
+
+&lt;p&gt;While we have vilified noise showing that it makes interpreting signals more difficult, it can actually be helpful in some instances. It is especially useful in the cases where we are more interested in the shape or distribution of the data rather than the bitwise reconstruction.&lt;/p&gt;
+
+&lt;p&gt;If we go back to the previous definitions of encoder/decoder and consider instead a clean encoder, &lt;script type=&quot;math/tex&quot;&gt;f_K&lt;/script&gt; with a noisy decoder &lt;script type=&quot;math/tex&quot;&gt;g^{\sigma}(i) = c_i + \epsilon&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;\epsilon \sim \mathcal{N}(0, \sigma^2)&lt;/script&gt; independent of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;. We then fix the number of segmentations by setting &lt;script type=&quot;math/tex&quot;&gt;K = 3&lt;/script&gt; and vary the standard deviation of the additive noise and then measure &lt;script type=&quot;math/tex&quot;&gt;E_{d}&lt;/script&gt; as before. What we find is that there is a certain sweet spot of&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/gain-reconstruction.svg&quot; alt=&quot;Gain&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We obtain an optimal (global) noise value at around &lt;script type=&quot;math/tex&quot;&gt;\sigma = 0.1&lt;/script&gt; and notice that the &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;-means approach works best. Somehow, the addition of noise at the correct magnitude performs better than no noise at all. Why does this seem to work?&lt;/p&gt;
+
+&lt;p&gt;Because we are measuring the discrepancy in distribution terms, rather than in a pointwise manner, the noise helps to fill the “holes” that are left behind by not having a high enough fidelity (&lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt;). What we are actually doing here is modelling the source variable as a Gaussian mixture model with three components and shared variance, but rather than using the common EM-approach of finding centers, we have chosen them more arbitrarily. What we do see is that the choice of topology is again important to get a correct coverage of the code-space. These centers must be distributed non-overlappingly according to some &lt;em&gt;maximum likelihood&lt;/em&gt; law, rather than an a-priori maximally covering law.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If our topology is a minimally covering set and the noise process is locally applied to clusters it allows us to build bridges.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The UMAP &lt;a class=&quot;citation&quot; href=&quot;#mcinnes2018umap&quot;&gt;(McInnes, Healy, &amp;amp; Melville, 2018)&lt;/a&gt; method is a beautiful application of this principle, in which simplical complexes are used to construct this covering set.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/noisy-surface.svg&quot; alt=&quot;Gaussian noise on surface points&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;when-can-we-perfectly-capture-the-inputs&quot;&gt;When can we perfectly capture the inputs?&lt;/h2&gt;
+
+&lt;p&gt;We have seen that convergence in distribution is more easily attainable than pointwise convergence. In fact, noise injection appears to help us for convergence in distribution, as it provide topological covering in the absence of sufficient rate (if our channel is well calibrated). Still, the question remains to what degree we could reconstruct the inputs exactly, in the presence of noise or not.&lt;/p&gt;
+
+&lt;p&gt;The trivial results were already proven in the 1950s by Claude Shannon &lt;a class=&quot;citation&quot; href=&quot;#mackay2003information&quot;&gt;(MacKay, 2003)&lt;/a&gt; and they will tell you that data can be compressed losslessly down to the entropy of the signal and it can be transmitted with error bounded by the information rate. But Shannon (and lossless compression) is not all there is to be said about compression and error-free transmission. The assumuptions that Shannon and his peers built upon were very general channels and the data passed through are assumed to have certain structure, e.g. i.i.d. samples. Signal regularity has widely been used to write adaptive and domain specific channels, such as for &lt;a href=&quot;https://en.wikipedia.org/wiki/Video_coding_format&quot;&gt;video coding&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Speech_coding&quot;&gt;speech coding&lt;/a&gt;, and machine learning is the current avenue for adaptive data-based compression.&lt;/p&gt;
+
+&lt;p&gt;As we will see in next post, posing learning as a noisy communication channel problem gives us the ability do well-posed&lt;sup id=&quot;fnref:well-posed&quot;&gt;&lt;a href=&quot;#fn:well-posed&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; maximum (approximate) likelihood estimation in an unsupervised way. It provides a trivial way to write down a likelihood function, which is given by reconstruction error. Additionally, due to its information theoretic properties, it is amenable to a Bayesian interpretation, for which is becomes simple to pose the problem of posterior inference - though this problem is not always easily solvable.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;bibliography&quot;&gt;Bibliography&lt;/h2&gt;
+
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;span id=&quot;friedman2001elements&quot;&gt;Friedman, J., Hastie, T., &amp;amp; Tibshirani, R. (2001). &lt;i&gt;The elements of statistical learning&lt;/i&gt; (Vol. 1). Springer series in statistics New York.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;mcinnes2018umap&quot;&gt;McInnes, L., Healy, J., &amp;amp; Melville, J. (2018). Umap: Uniform manifold approximation and projection for dimension reduction. &lt;i&gt;ArXiv Preprint ArXiv:1802.03426&lt;/i&gt;.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;mackay2003information&quot;&gt;MacKay, D. J. C. (2003). Information theory, inference, and learning algorithms. Cambridge Univ Pr.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;&lt;button type=&quot;button&quot; class=&quot;collapser&quot;&gt;Show proofs&lt;/button&gt;&lt;/p&gt;
+
+&lt;div class=&quot;collapse&quot;&gt;
+
+  &lt;h3 id=&quot;bernoulli-noise-is-equivalent-to-mixture-of-two-distributions&quot;&gt;Bernoulli noise is equivalent to mixture of two distributions&lt;/h3&gt;
+
+  &lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;X \sim \text{Cat} \left( \{ p_k \}_{k=1}^K \right )&lt;/script&gt; be a distribution of a set of &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt; categories with probability of class &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; being &lt;script type=&quot;math/tex&quot;&gt;p_k \geq 0&lt;/script&gt;, and let &lt;script type=&quot;math/tex&quot;&gt;Y \sim \text{Ber}(p)&lt;/script&gt;. Define their sum as &lt;script type=&quot;math/tex&quot;&gt;Z = X + Y&lt;/script&gt;. The probability of &lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; is given by.&lt;/p&gt;
+
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\mathbb{P}(Z = z) &amp;= \mathbb{P}(X + Y = z) = \mathbb{P}(X = z - Y) = \sum_{i = 1}^K \mathbb{P}(X = z - k) \mathbb{P}(Y = k)\\
+&amp;= \mathbb{P}(X = z - 1) p + \mathbb{P}(X = z) (1 - p)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+  &lt;p&gt;Now consider the same problem, but &lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; is instead wrapped to the image of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;, such that &lt;script type=&quot;math/tex&quot;&gt;Z' = X + Y \mod K&lt;/script&gt;.&lt;/p&gt;
+
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\mathbb{P}(Z' = z) &amp;= \sum_{k=1}^K [z = k](p_kp + p_{(k+1 \mod  K)}(1 - p))
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+  &lt;p&gt;This is equivalent to &lt;script type=&quot;math/tex&quot;&gt;Z' = p\text{Cat}( \{ p_{k+1 \mod K} \} ) + (1 - p) \text{Cat}( \{ p_k \} )&lt;/script&gt;, a mixture of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; with probability &lt;script type=&quot;math/tex&quot;&gt;1 - p&lt;/script&gt; and a shifted version of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; with probability &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;. So adding Bernoulli noise to a categorical variable leads to a convex mixture of categorical distributions.&lt;/p&gt;
+
+  &lt;h3 id=&quot;weak-convergence-of-encoder-decoder&quot;&gt;Weak convergence of encoder-decoder&lt;/h3&gt;
+
+  &lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; be a function which acts pointwise on &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;, then the expected reconstruction under &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; is given by.&lt;/p&gt;
+
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\lim_{N \to \infty} \mathbb{E}[h(g(f(X)))] &amp;= \lim_{N \to \infty} \int_{-\infty}^{\infty} p_X(x) h(c_{\arg \min_{n} ||x - c_n||}) \ dx = \lim_{N \to \infty} \sum_{n=1}^N \int_{I_n} p_X(x) h(c_n) \ dx
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+  &lt;p&gt;Where &lt;script type=&quot;math/tex&quot;&gt;I_n = \left [ c_{n-1} + \frac{c_{n} - c_{n-1}}{2}, c_{n} + \frac{c_{n+1} - c_{n}}{2} \right ]&lt;/script&gt; are segmentations of the real line based on the midpoint of subsequent cluster centers. By seeing that as &lt;script type=&quot;math/tex&quot;&gt;N \to \infty&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\|I_n\| \to 0&lt;/script&gt; the statement above converges to a Riemannian integral.&lt;/p&gt;
+
+  &lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{aligned}
+\lim_{N \to \infty} \sum_{n=1}^N \int_{I_n} p_X(x) h(c_n) \ dx = \int p_X(x) h(x) \ dx = \mathbb{E}[h(X)]
+\end{aligned}&lt;/script&gt;
+
+  &lt;p&gt;Which shows that &lt;script type=&quot;math/tex&quot;&gt;g(f(X)) \xrightarrow{w} X&lt;/script&gt; as &lt;script type=&quot;math/tex&quot;&gt;N \to \infty&lt;/script&gt;. By the argument that &lt;script type=&quot;math/tex&quot;&gt;\| I_n \| \to 0&lt;/script&gt; with the noise process &lt;script type=&quot;math/tex&quot;&gt;\psi&lt;/script&gt; defined earlier, &lt;script type=&quot;math/tex&quot;&gt;g(\psi(f(X))) \xrightarrow{w} X&lt;/script&gt; similarly. Note that this proof only holds due to the facts that &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}&lt;/script&gt; has a total order and &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; is Riemann integrable.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;h3 id=&quot;footnotes&quot;&gt;Footnotes&lt;/h3&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:rate&quot;&gt;
+      &lt;p&gt;For an introduction to this concept, the &lt;a href=&quot;https://en.wikipedia.org/wiki/Rate%E2%80%93distortion_theory#Memoryless_(independent)_Gaussian_source_with_squared-error_distortion&quot;&gt;wikipedia article&lt;/a&gt; is quite good. &lt;a href=&quot;#fnref:rate&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:shannon&quot;&gt;
+      &lt;p&gt;Shannon’s source coding theorem tells us that a sequence of &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; i.i.d. random variables with entropy &lt;script type=&quot;math/tex&quot;&gt;H(X)&lt;/script&gt; cannot be perfectly compressed to less than &lt;script type=&quot;math/tex&quot;&gt;NH(X)&lt;/script&gt; bits. &lt;a href=&quot;#fnref:shannon&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:transform&quot;&gt;
+      &lt;p&gt;Consider the CDF of a distribution as &lt;script type=&quot;math/tex&quot;&gt;p = F(x; \theta)&lt;/script&gt; with inverse &lt;script type=&quot;math/tex&quot;&gt;x = F^{-1}(p; \theta)&lt;/script&gt; its quantile function. An index set &lt;script type=&quot;math/tex&quot;&gt;I \subset [0, 1]&lt;/script&gt; can then be pushed through the distribution &lt;script type=&quot;math/tex&quot;&gt;[0, 1] \supset I_F = F^{-1}(I; \theta)&lt;/script&gt; &lt;a href=&quot;#fnref:transform&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:epsilon&quot;&gt;
+      &lt;p&gt;This plot is actual better conveyed as three-dimensional, where the choice of epsilon varies over this new direction. Here we have picked an arbitrary threshold to simplify the plots. &lt;a href=&quot;#fnref:epsilon&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:well-posed&quot;&gt;
+      &lt;p&gt;Actually, the degree to which this is actually all that well-posed is one of the points of contention in the following post. &lt;a href=&quot;#fnref:well-posed&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 25 Jun 2020 01:00:00 +0300</pubDate>
+        <link>http://uncorrelated.ml//signal-void-1</link>
+        <guid isPermaLink="true">http://uncorrelated.ml//signal-void-1</guid>
+      </item>
+    
+  </channel>
+</rss>
