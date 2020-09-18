@@ -18,7 +18,9 @@ permalink: /:title
 title: Uncorrelated
 email: jesper@wohlert.nu
 description: >- # this means to ignore newlines until "baseurl:"
-  None
+  Blog about learning and information; human and machine.
+  Posts are released once every few months featuring in-depth coverage of problems and
+  ideas within these topics.
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://uncorrelated.ml" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  wohlert
@@ -31,6 +33,7 @@ plugins:
   - jekyll-feed
   - jekyll-scholar
   - jekyll-compass
+  - jekyll-sitemap
 
 sass:
   sass_dir: _sass

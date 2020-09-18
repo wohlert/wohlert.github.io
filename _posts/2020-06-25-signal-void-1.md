@@ -5,6 +5,7 @@ date: 2020-06-25 00:00:00 +0200
 description: This is the first post of two on information theory in the context of unsupervised machine learning.
   The premise of this first post is to introduce some basic concepts and simple examples to get the thinking started.
 image: /assets/images/pack2.jpg
+keywords: machine-learning, information-theory, noisy-channels
 ---
 _This is the first post of two on information theory in the context of unsupervised machine learning._
 _The premise of this first post is to introduce some basic concepts and simple examples to get the thinking started._
@@ -19,7 +20,7 @@ In principle, this tiny alphabet will allow you encode any message. Truly, we co
 
 Intuitively, we must think that we are able to do a tradeoff between the amount of error we incur in interpreting the original message (distortion) and the amount of information we can send per second (rate). In fact there is, and we have plotted the relationship in the case where sequence $$X_1, \dots, X_n$$ are i.i.d. Gaussians, $$X_1 \sim \mathcal{N}(0, 1)$$ and message reconstruction is measured in terms of mean-squared error. This is otherwise known as the rate-distortion curve for a channel[^rate].
 
-![](assets/images/rate-sigma.svg)
+![Rate-distortion curve for Gaussian channel with fixed variance](assets/images/rate-sigma.svg)
 
 Reading the graph, in order to send the messages with virtually no loss of information, we would need at least 5 bits of information per symbol. If we can accept an error of 25%, meaning on average, every 4th symbol is wrong, we can get away with 1 bit. Note that this curve is specific for the case where the source variable is Gaussian and the channel has the property of being memoryless. We can draw many curves like this for different variances of the Gaussian and what we will find is that the hardness of the problem is ultimately governed by the **entropy** of the source data[^shannon] - more random data being harder to compress.
 
@@ -68,13 +69,26 @@ From the figure on the left, we can see that the error asymptotically approaches
 
 The packet error (computed with $$\epsilon = 10^{-4}$$)[^epsilon] similarly shows that the choice of topology is important. But the capacity of the channel, which is here denoted by the number of segmentations, must increase much more before we can reliable send and receive the messages. Even with $$4096$$ segmentations, or $$12$$ bits, we still receive the wrong message 20% of the time!
 
-How could we improve on this estimate? Well, we can try integrate out the noise by performing clever sampling from the channel. As we know that the source of noise is inherit to the channel, we can probe the noise process by sending multiple instances through the channel. This will hold as long as we know what the ground truth signal is and when only when the noise process is stationary. We can devise an algorithm based on Monte-Carlo sampling below.
+How could we improve on this estimate? Well, we can try integrate out the noise by performing clever sampling from the channel. As we know that the source of noise is inherit to the channel, we can probe the noise process by sending multiple instances through the channel. This will hold as long as we know what the ground truth signal is, and only when the noise process is stationary. We can devise an algorithm based on Monte-Carlo sampling below.
 
 ```python
-1. Fix the channel capacity.
-2. Send the same message x through the channel M times, such that z = f(x) is the noisy encoded signal.
-3. Compute the M-sample statistic z = F[z1, z2, ..., zM].
-4. Use z as a new code point and decode.
+def encode(value):
+  # Noisy channel encode
+  ...
+
+
+def mean_statistic(samples):
+  acc = 0
+  for code in samples:
+    acc += samples
+
+  acc /= len(samples)
+  return acc
+
+
+def monte_carlo(num_samples, sample_statistic=mean_statistic):
+  samples = [encode(message) for _ in range(num_samples)]
+  return sample_statistic(responses)
 ```
 
 ![Monte Carlo error estimates for packet error ratio](assets/images/monte-carlo-error.svg)

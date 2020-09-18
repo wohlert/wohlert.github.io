@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   {% include head.html %}
   <body class="post-template">
     {% include header.html %}
@@ -9,26 +9,13 @@
 
           <h1 class="post-title">{{ page.title }}</h1>
           <div class="description">
-          <!--
-            <span class="heading">
-              <span style="font-weight: 800">Abstract</span>
-              <p>
-                  {{ page.description }}
-              </p>
-            </span>
-          -->
             <span class="meta-data heading">
-                <section class="byline" style="display:none;">
+                <section class="byline" style="display: none;">
                   <span itemprop="author" itemscope="" itemtype="http://schema.org/Person">
                     <span itemprop="name" rel="author">Jesper Wohlert</span>
                   </span>
                 </section>
-                <time class="date" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}" title="{{ page.date | date_to_string }}">Published on {{ page.date | date_to_string }}
-                </time>
-                &nbsp;
-                {% for category in page.categories %}
-                  <li>#<a href="{{site.url}}/category/{{category|slugize}}">{{category}}</a></li>
-                {% endfor %}
+                <time class="date" itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}" title="{{ page.date | date_to_string }}">Published on {{ page.date | date_to_string }}</time>
             </span>
           </div>
         </header>

@@ -42,13 +42,33 @@ $color-headline: darken($color-text, 10%);
   }
 }
 
+.date {
+  line-height: 0px;
+}
+
 body {
   visibility: hidden;
+}
+
+.hljs-keyword {
+  color: #9E579D !important;
+}
+
+.hljs-title {
+  color: #222 !important;
 }
 
 
 .dark-mode {
   .mjx-chtml {
+    color: #bebebe;
+  }
+
+  .hljs-keyword {
+    color: #5dc477;
+  }
+
+  .hljs-title {
     color: #ddd;
   }
 
@@ -58,7 +78,7 @@ body {
 
   a {
     color: #5dc477;
-    text-decoration-color: #fff;
+    text-decoration-color: #dbd8d7;
   }
 
   a:hover {
@@ -67,7 +87,7 @@ body {
 
 
   .links *, #header a, h3 a {
-    color: #eee;
+    color: #ddd;
   }
 
   .collapser {
@@ -78,25 +98,25 @@ body {
     background-color: #444;
   }
 
-  #toggler svg, h3 svg {
+  #toggler svg, #header svg {
     filter: invert(85%);
   }
 
   #main, #header, code {
-    background: #282828;
+    background: #262626;
   }
 
   #main, #header, hr {
     border-color: #555;
   }
 
-  background-color: #282828;
+  background-color: #262626;
 
   #hero-img {
     filter: invert(85%);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6, #header>span {
     color: #ccc;
   }
 
@@ -108,11 +128,11 @@ body {
     border: none;
     font-size: 14px;
     border-bottom: 1px dashed #bbb;
-    color: #eee;
+    color: #bebebe;
     font-family: monospace;
   }
 
-  color: #aaa;
+  color: #aca6a3;
 }
 /*
 
@@ -293,15 +313,12 @@ mark {
 }
 
 #header {
-  span, a, h3 {
+  span, a {
     font-size: 20px;
-  }
-  h3 {
-    //border-bottom: 2px solid $color-main;
   }
 }
 
-.links, #header>h3, .post-title, .site-name {
+.links, #header>span, .post-title, .site-name {
     font-family: $font-main;
 }
 
@@ -340,9 +357,6 @@ hr {
 }
 
 .wide {
-  width: 100% !important;
-  max-height: none !important;
-  max-width: none !important;
   .post {
     width: 20%;
     min-width: 150px;
@@ -356,7 +370,7 @@ hr {
 
 #about {
     h1 {
-        color: $color-text !important;
+        color: $color-text;
         font-weight: 300;
     }
     .sign {
@@ -367,7 +381,7 @@ hr {
 
 .content > .meta {
     text-align: left;
-    color: #aaa !important;
+    color: #aaa;
     li {
       margin: 0;
       padding-left: 10px;

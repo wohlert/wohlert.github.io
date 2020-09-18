@@ -63,6 +63,8 @@ GEM
       citeproc-ruby (~> 1.0)
       csl-styles (~> 1.0)
       jekyll (~> 3.0)
+    jekyll-sitemap (1.4.0)
+      jekyll (>= 3.7, < 5.0)
     jekyll-watch (2.0.0)
       listen (~> 3.0)
     kramdown (1.16.2)
@@ -96,6 +98,7 @@ DEPENDENCIES
   jekyll-compass (~> 2.0.1)
   jekyll-feed (~> 0.6)
   jekyll-scholar
+  jekyll-sitemap
   rake
   sass (~> 3.4.25)
   tzinfo-data

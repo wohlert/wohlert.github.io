@@ -1,10 +1,10 @@
 <div id="header">
-  <h3>
+  <span>
     <svg style="position: absolute; margin-left: -35px;" height="30px" width="30px" viewBox="0 0 45 45">
         <use xlink:href="{{ '/assets/icons/icon.svg#Inverted' | relative_url }}"></use>
     </svg>
-    <a href="{{ site.url }}" style="text-decoration: none;">{{ site.title | downcase }}</a>
-  </h3>
+    <a href="{{ 'posts' | relative_url }}" style="text-decoration: none;">{{ site.title | downcase }}</a>
+  </span>
   <nav class="links">
     <ul>
         <li>
@@ -14,7 +14,7 @@
             </svg>
           </a>
         </li>
-        <li>
+        <li class="external">
           <a title="Posts" href="{{ 'posts' | relative_url }}">
           <svg class="icon" height="15px" width="15px">
             <use xlink:href="{{ '/assets/icons/posts.svg#icon' | relative_url }}"></use>
@@ -22,14 +22,14 @@
           </a>
         </li>
         <li class="external">
-        <a title="Github" href="https://github.com/wohlert" target="_blank">
+        <a title="Github" href="https://github.com/wohlert">
           <svg class="icon" height="15px" width="15px">
             <use xlink:href="{{ '/assets/icons/github.svg#icon' | relative_url }}"></use>
           </svg>
         </a>
         </li>
         <li class="external">
-        <a title="Twitter" href="https://twitter.com/whlrt" target="_blank">
+        <a title="Twitter" href="https://twitter.com/whlrt">
           <svg class="icon twitter" height="15px" width="15px">
             <use xlink:href="{{ '/assets/icons/twitter.svg#icon' | relative_url }}"></use>
           </svg>
@@ -42,7 +42,7 @@
           </svg>
         </a>
         </li>
-        <li class="external">
+        <li>
           <a title="Toggle dark / light mode" href="#" onclick="toggle()" id="toggler">
             <svg class="icon" height="15px" width="15px">
               <use xlink:href="{{ '/assets/icons/dice.svg#icon' | relative_url }}"></use>

@@ -3,6 +3,7 @@ layout: article
 title: "The inverse kinematics trick"
 date: 2020-08-07 00:00:00 +0200
 description: We explore the inverse Jacobian method known from kinematics in the context of inverting learned models and present it as another "trick" in the ML toolbox.
+keywords: machine-learning, inverse-kinematics, robotics, jacobian
 image: /assets/images/kinematics.jpg
 ---
 

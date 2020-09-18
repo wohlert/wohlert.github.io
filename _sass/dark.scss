@@ -1,6 +1,6 @@
 @media (prefers-color-scheme: dark) {
   #main, body.post-template, body {
-    background-color: #222 !important;
+    background-color: #222;
     color: #e4e4e4;
   }
   @media screen and (min-width: $desktop-width){ // Desktop higher resolutions
@@ -11,7 +11,7 @@
   }
 
   h1.post-title, h1, h2, h3, .archive-heading, h4, h5, h6 {
-    color: #ededed !important;
+    color: #ededed;
   }
 
   a {
@@ -20,7 +20,7 @@
 
   #header {
     background: #222;
-    border-bottom: 1px solid #444 !important;
+    border-bottom: 1px solid #444;
     * {
       color: #fff;
     }
@@ -44,7 +44,7 @@
 
   a {
     text-decoration-color: lighten($color-dark, 10%);
-    transition: all 0.5s ease !important;
+    transition: all 0.5s ease;
     &:hover {
       text-decoration: none;
     }

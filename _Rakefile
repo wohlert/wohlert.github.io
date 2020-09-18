@@ -30,6 +30,9 @@ namespace :blog do
       "config" => "_config.yml"
     })).process
 
+    # Clean up the HTML
+    system "bash _scripts/prettify.sh"
+
     # Get the origin to which we are going to push the site.
     origin = `git config --get remote.origin.url`
 

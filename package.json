@@ -5,11 +5,12 @@
   "main": "index.html",
   "dependencies": {
     "markdown-it": "^8.4.0",
+    "markdown-it-container": "^2.0.0",
     "markdown-it-footnote": "^3.0.1",
     "markdown-it-highlightjs": "^3.0.0",
     "markdown-it-mark": "^2.0.0",
     "markdown-it-mathjax": "^2.0.0",
-    "markdown-it-container": "^2.0.0",
+    "pretty": "^2.0.0",
     "showdown": "^1.7.1"
   },
   "devDependencies": {

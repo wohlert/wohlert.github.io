@@ -9,7 +9,7 @@
 .norm {
   position: relative;
   transform: translateY(-50%);
-  top: 50% !important;
+  top: 50%;
 }
 
 img.large, img.full {
@@ -17,14 +17,6 @@ img.large, img.full {
   max-width: calc(100% + 3em);
   margin-left: 0;
   margin-left: calc(0px - 1.5em);
-}
-
-img.full-js {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-left: 0 !important;
-  position: absolute !important;
-  left: 0 !important;
 }
 
 .external { display: none !important; }

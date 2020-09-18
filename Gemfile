@@ -15,6 +15,8 @@ gem "jekyll", "~> 3.7.3"
 gem "jekyll-compass", "~> 2.0.1"
 gem "jekyll-scholar"
 
+gem "jekyll-sitemap"
+
 gem "rake"
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
 # uncomment the line below. To upgrade, run `bundle update github-pages`.
