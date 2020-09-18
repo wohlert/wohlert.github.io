@@ -11,7 +11,7 @@
     "markdown-it-mark": "^2.0.0",
     "markdown-it-mathjax": "^2.0.0",
     "pretty": "^2.0.0",
-    "showdown": "^1.7.1"
+    "showdown": "^1.9.1"
   },
   "devDependencies": {
     "markdown-it-regexp": "^0.4.0",
